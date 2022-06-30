@@ -5,15 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PokeDex</title>
+    <link rel="shortcut icon" href="./img/pokeball.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gantari:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=PT+Sans:wght@700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
     <script src="./script.js"></script>
   </head>
   <body onload="loadPokemon()">
-    <div id="pokedex">
-      <h1 id="pokemonName">Name</h1>
-    </div>
-    <div class="info-container">
-      <img id="pokemonImg" />
+    <div class="pokemonContainer">
+      <div class="headlineContainer">
+        <h1 id="headline"></h1>
+      </div>
+      <div id="pokedex">
+        <div class="headercontainer">
+          <div class="imgContainer">
+            <img id="pokemonImg" />
+            <div class="circle"></div>
+          </div>
+          <div class="pokemonOverview">
+            <div id="pokemonId"></div>
+            <h2 id="pokemonName">Name</h2>
+            <div id="types"></div>
+          </div>
+        </div>
+      </div>
+      <div class="infoContainer"></div>
     </div>
   </body>
 </html>
