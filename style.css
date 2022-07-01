@@ -1,3 +1,22 @@
+:root {
+  --clr-black: #000;
+  --clr-bg-grey: rgba(193, 193, 193, 0.5);
+  --clr-bg-pokedex: #fb6c6c;
+  --clr-bg-fire: #ffa756;
+  --clr-fire: #fb761a;
+  --clr-bg-water: #58abf6;
+  --clr-water: #498fda;
+  --clr-bg-bug: #498fda;
+  --clr-bug: #8cb332;
+  --clr-poison: #a554cc;
+  --clr-bg-electric: #f2cb55;
+  --clr-electric: #edd431;
+  --clr-bg-ground: #f78551;
+  --clr-ground: #de7748;
+  --clr-bg-fighting: #eb4971;
+  --clr-fighting: #d04064;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -6,51 +25,54 @@
 
 body {
   font-family: 'Gantari', sans-serif;
-  background: rgba(193, 193, 193, 0.5);
+  background: var(--clr-bg-grey);
+}
+
+#types img {
+  height: 15px;
+}
+
+.pokemonContainer {
+  max-width: 450px;
+  position: relative;
 }
 
 .headlineContainer {
   position: absolute;
   top: 0;
-  width: 600px;
-  margin-left: -120px;
+  right: 0;
+  left: 0;
   overflow: hidden;
-  font-size: 45px;
+  font-size: 52px;
   text-transform: uppercase;
-  z-index: 0;
+
   display: flex;
   justify-content: center;
-  mask-image: linear-gradient(white 0, transparent 65%);
+  mask-image: linear-gradient(white 0, transparent 60%);
 }
 
 #headline {
-  color: white;
-}
-
-.pokemonContainer {
-  max-width: 450px;
+  color: var(--clr-bg-pokedex);
+  text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff,
+    1px 1px 0 #fff;
 }
 
 #pokedex {
   min-height: 40vh;
   width: 100%;
-  background-color: #fb6c6c;
+  background-color: var(--clr-bg-pokedex);
   color: white;
-  padding: 40px;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .headercontainer {
   display: flex;
-}
-
-.infoContainer {
-  border-radius: 40px 40px 0 0;
-  margin-top: -40px;
-  min-height: 500px;
-
-  background: #fff;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  margin-left: 50px;
 }
 
 .imgContainer {
@@ -71,4 +93,23 @@ body {
   height: 120px;
   width: 120px;
   left: 10px;
+}
+
+.pokemonOverview {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+#pokemonId {
+  color: var(--clr-black);
+  font-weight: 600;
+}
+
+.infoContainer {
+  border-radius: 40px 40px 0 0;
+  margin-top: -40px;
+  min-height: 500px;
+
+  background: #fff;
 }
