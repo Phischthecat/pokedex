@@ -13,27 +13,41 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <script src="./helpers.js"></script>
     <script src="./script.js"></script>
   </head>
   <body onload="loadPokemon()">
-    <div class="pokemonContainer">
-      <div class="headlineContainer">
-        <h1 id="headline"></h1>
+    <div class="header">
+      <img src="./img/pokeball.png" alt="" />
+      <input class="searchBar" id="search" type="search" />
+    </div>
+    <div class="content">
+      <div class="allPokemonContainer">
+        <div id="pokemonContainer"></div>
       </div>
-      <div id="pokedex">
-        <div class="headercontainer">
-          <div class="imgContainer">
-            <img id="pokemonImg" />
-            <div class="circle"></div>
+
+      <div class="pokedexContainer">
+        <div class="wrapper">
+          <div class="headlineContainer">
+            <h1 id="headline"></h1>
           </div>
-          <div class="pokemonOverview">
-            <div id="pokemonId"></div>
-            <h2 id="pokemonName">Name</h2>
-            <div id="types"></div>
+          <div id="pokedex">
+            <div class="headercontainer">
+              <div class="imgContainer">
+                <img id="pokemonImg" />
+                <div class="circle"></div>
+              </div>
+              <div class="pokemonOverview">
+                <div id="pokemonId"></div>
+                <h2 id="pokemonName"></h2>
+                <div id="types" class="pokemonTypes"></div>
+              </div>
+            </div>
           </div>
+
+          <div class="infoContainer"></div>
         </div>
       </div>
-      <div class="infoContainer"></div>
     </div>
   </body>
 </html>
