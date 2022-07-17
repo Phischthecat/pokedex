@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PokeDex</title>
-    <link rel="shortcut icon" href="./img/pokeball.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="./img/pikachu.png" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -18,8 +18,12 @@
   </head>
   <body onload="loadPokemon()">
     <div class="header">
-      <img src="./img/pokeball.png" alt="" />
-      <input class="searchBar" id="search" type="search" />
+      <input
+        class="searchBar"
+        id="search"
+        type="search"
+        placeholder="Find your pokemon ..."
+      />
     </div>
     <div class="content">
       <div class="allPokemonContainer">
@@ -27,11 +31,19 @@
       </div>
 
       <div class="pokedexContainer">
-        <div class="wrapper">
+        <div id="loader" class="hide positionLoader">
+          <div class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+        <div id="current-pokemon" class="wrapper">
           <div class="headlineContainer">
             <h1 id="headline"></h1>
           </div>
-          <div id="pokedex">
+          <div id="pokedexHeader">
             <div class="headercontainer">
               <div class="imgContainer">
                 <img id="pokemonImg" />
@@ -43,9 +55,12 @@
                 <div id="types" class="pokemonTypes"></div>
               </div>
             </div>
+            <div id="pokedexMenu"></div>
           </div>
-
-          <div class="infoContainer"></div>
+          <div class="infoContainer">
+            <div id="statsContainer"></div>
+            <div id="typeDefenseContainer"></div>
+          </div>
         </div>
       </div>
     </div>

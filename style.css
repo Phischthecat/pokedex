@@ -1,8 +1,8 @@
 :root {
   --clr-black: #000;
   --clr-white: #fff;
-  --clr-bg-grey: rgba(193, 193, 193, 0.95);
-  --clr-bg-pokedex: #fb6c6c;
+  --clr-bg-grey: #c1c1c1f2;
+  --clr-bg-hover: #8c8c8c;
   --clr-bg-fire: #ffa756;
   --clr-fire: #fb761a;
   --clr-bg-water: #58abf6;
@@ -16,6 +16,7 @@
   --clr-ground: #de7748;
   --clr-bg-fighting: #eb4971;
   --clr-fighting: #d04064;
+  --border-radius: 10px;
 }
 
 * {
@@ -27,6 +28,7 @@
 body {
   font-family: 'Gantari', sans-serif;
   background: var(--clr-bg-grey);
+  min-height: 120vh;
 }
 
 .content {
@@ -40,25 +42,38 @@ body {
 
 ------------------------------------*/
 
-.allPokemonContainer {
-  position: relative;
-}
-
 .header {
   position: sticky;
   top: 0;
   display: flex;
   justify-content: center;
-  gap: 50px;
   padding: 25px 0;
   margin-bottom: 15px;
   width: 100%;
-  border-radius: 0 0 10px 10px;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
   background: var(--clr-bg-grey);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   z-index: 4;
+}
+
+.searchBar {
+  border: none;
+  border-radius: calc(var(--border-radius) - 5px);
+  outline: none;
+  width: 350px;
+  height: 35px;
+  padding-left: 15px;
+  font-size: 18px;
+}
+
+/* ----------------------------------
+
+              POKEMON CARD
+
+------------------------------------*/
+
+.allPokemonContainer {
+  position: relative;
 }
 
 #pokemonContainer {
@@ -75,8 +90,19 @@ body {
   width: 280px;
   padding: 15px;
   margin: 12px;
-  border-radius: 10px;
   background-color: var(--clr-white);
+  border: 1px solid transparent;
+  border-radius: var(--border-radius);
+  transition-duration: 100ms;
+  cursor: pointer;
+}
+
+.pokemonCard:hover {
+  border: 1px solid var(--clr-bg-hover);
+}
+
+.pokemonCard:hover .pokemonImgWrapper {
+  transform: scale(1.1);
 }
 
 .type img {
@@ -110,6 +136,43 @@ body {
 
 /* ----------------------------------
 
+               POKEDEX MENU
+
+------------------------------------*/
+.pokedexMenu {
+  margin-bottom: 50px;
+  position: relative;
+  height: 100%;
+}
+
+.pokedexMenu ul {
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
+  width: 100%;
+}
+
+.pokedexMenu ul li {
+  cursor: pointer;
+  margin-bottom: -30px;
+  padding: 10px 20px;
+  transition: all 100ms ease-in-out;
+}
+
+.pokedexMenu ul li:hover {
+  background-color: var(--clr-bg-hover);
+  color: var(--clr-black);
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.active {
+  background-color: var(--clr-white);
+  color: var(--clr-black);
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+/* ----------------------------------
+
                 POKEDEX
 
 ------------------------------------*/
@@ -124,9 +187,9 @@ body {
 
 .wrapper {
   position: fixed;
-  right: 0;
+  right: 30px;
   width: 450px;
-  margin-right: 35px;
+  margin-top: 11px;
 }
 
 .headlineContainer {
@@ -144,17 +207,18 @@ body {
 }
 
 #headline {
-  color: var(--clr-bg-pokedex);
+  color: var(--clr-white);
   text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff,
     1px 1px 0 #fff;
 }
 
-#pokedex {
+#pokedexHeader {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 35vh;
-  border-radius: 15px;
+  justify-content: space-around;
+  flex-direction: column;
+  padding-top: 40px;
+  height: 300px;
+  border-radius: var(--border-radius);
   color: white;
 }
 
@@ -199,26 +263,195 @@ body {
   font-weight: 600;
 }
 
+h2 {
+  font-size: 28px;
+}
+
 .pokemonTypes {
   display: flex;
   margin: 5px 0;
-  gap: 10px;
+  gap: 5px;
 }
 
 .type {
-  padding: 3px 7px;
-  border: 1px solid black;
-  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 5px 7px;
+  border-radius: calc(var(--border-radius) - 5px);
   display: flex;
   align-items: center;
   gap: 5px;
   color: var(--clr-white);
 }
 
+.positionLoader {
+  position: fixed;
+  top: 300px;
+  right: 250px;
+  z-index: -1;
+}
+
+.hide {
+  display: none !important;
+}
+
+/* ----------------------------------
+
+          POKEDEX INFO
+
+------------------------------------*/
+
 .infoContainer {
-  border-radius: 40px 40px 15px 15px;
+  border-radius: 40px 40px 0 0;
   margin-top: -40px;
-  height: 55vh;
+  padding: 20px 30px;
+  height: 45vh;
   overflow: auto;
   background: #fff;
+}
+
+table.blueTable {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+table.blueTable td,
+table.blueTable th {
+  padding: 3px 2px;
+}
+
+table.blueTable tbody td {
+  font-size: 14px;
+  width: 33%;
+}
+
+table.blueTable tbody td:nth-last-of-type(even) {
+  width: 10%;
+}
+
+table.blueTable thead th {
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--clr-black);
+  text-align: left;
+}
+
+.bar {
+  height: 4px;
+  background-color: var(--clr-black);
+  border-radius: var(--border-radius);
+}
+
+/* animation */
+.slide-out {
+  animation: slideOut ease-in-out 0.35s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slideOut {
+  0% {
+    right: 30px;
+  }
+  100% {
+    right: -550px;
+  }
+}
+
+.slide-in {
+  animation: slideIn ease-in-out 0.35s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slideIn {
+  0% {
+    right: -550px;
+  }
+  100% {
+    right: 30px;
+  }
+}
+
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ellipsis div {
+  position: absolute;
+  top: 33px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #fff;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+  left: 8px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+  left: 8px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+  left: 32px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+  left: 56px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 0);
+  }
+}
+
+#typeDefenseContainer h4 {
+  margin: 15px 0 10px 0;
+}
+
+#typeDefense {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.typeDefContainer {
+  margin: 5px 2.5px;
+
+  font-size: 14px;
+}
+
+.typeDefContainer img {
+  background-color: black;
+  padding: 4px;
+  height: 25px;
+  width: 25px;
+  border-radius: calc(var(--border-radius) / 2);
+}
+
+.typeDef {
+  text-align: center;
+  padding: 4px;
 }
