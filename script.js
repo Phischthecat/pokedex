@@ -2,23 +2,21 @@ let pokemons = [];
 let pokemonStats = [];
 let typesOfPokemon = [];
 let typeDef = [];
+let typeDamage = [];
+let weaknesses = [];
+let currentAbilities = [];
 let language = 'en';
-
-let limit = 50; //id
-
-async function fetchUrl(url) {
-  let response = await fetch(url);
-  return (currentResponse = await response.json());
-}
+let languagePack = headlines_english;
+let limit = 15; //id
 
 async function loadPokemon() {
-  for (let j = 1; j < 19; j++) {
-    let url_types = `https://pokeapi.co/api/v2/type/` + j;
+  for (let i = 1; i < 19; i++) {
+    let url_types = `https://pokeapi.co/api/v2/type/` + i;
     let currentPokemon = await fetchUrl(url_types);
     typesOfPokemon.push(currentPokemon);
   }
-  for (let j = 1; j < 7; j++) {
-    let url_stats = `https://pokeapi.co/api/v2/stat/` + j;
+  for (let i = 1; i < 7; i++) {
+    let url_stats = `https://pokeapi.co/api/v2/stat/` + i;
     let currentPokemon = await fetchUrl(url_stats);
     pokemonStats.push(currentPokemon);
   }
@@ -87,7 +85,7 @@ function renderPokedex(i) {
   getElement('loader').classList.remove('hide');
   setTimeout(function () {
     generatePokedexHeader(i);
-    renderPokedexStats(i);
+    renderPokedexAbout(i);
     slideInPokemonInfo();
     setTimeout(function () {
       getElement('loader').classList.add('hide');
@@ -108,18 +106,172 @@ function generatePokedexHeader(i) {
   getElement('pokedexMenu').innerHTML = /*html*/ `
   <div class="pokedexMenu">
               <ul>
-                <li class="menu" id="about" >About</li>
-                <li class="menu" id="stats" onclick="generatePokedexStats(${i})">Stats</li>
-                <li class="menu" id="evolution">Evolution</li>
+                <li class="menu left" id="about" onclick="renderPokedexAbout(${i})">About</li>
+                <li class="menu middle" id="stats" onclick="renderPokedexStats(${i})">Stats</li>
+                <li class="menu right" id="evolution">Evolution</li>
               </ul>
             </div>
   `;
 }
 
+async function renderPokedexAbout(i) {
+  let infoContainer = getElement('infoContainer');
+  infoContainer.innerHTML = '';
+  infoContainer.innerHTML = /*html*/ `
+  <div id="aboutWrapper">
+    <div id="aboutContainer"></div>
+  </div>
+  `;
+  aboutActive();
+  currentAbilities = [];
+  await getCurrentAbilities(i);
+  generatePokedexAbout(i);
+  changeColorByTypeInAbout(i);
+}
+// typesOfPokemon[i].name === typeDef[j].double_from[k].name && typesOfPokemon[i].name !== typeDef[j].half_from[l].name
+
+function getWeaknesses() {
+  typeDamage = [];
+  for (let i = 0; i < typesOfPokemon.length; i++) {
+    for (let j = 0; j < typeDef.length; j++) {
+      for (let k = 0; k < typeDef[j].double_from.length; k++) {
+        if (
+          typesOfPokemon[i].name === typeDef[j].double_from[k].name &&
+          !typeDamage.includes(typeDef[j].double_from[k].name)
+        ) {
+          typeDamage.push(typeDef[j].double_from[k].name);
+        }
+      }
+      for (let l = 0; l < typeDef[j].half_from.length; l++) {
+        if (typeDamage.includes(typeDef[j].half_from[l].name)) {
+          let index = typeDamage.indexOf(typeDef[j].half_from[l].name);
+          typeDamage.splice(index, 1);
+        }
+      }
+      for (let m = 0; m < typeDef[j].no_from.length; m++) {
+        if (typeDamage.includes(typeDef[j].no_from[m].name)) {
+          let index = typeDamage.indexOf(typeDef[j].no_from[m].name);
+          typeDamage.splice(index, 1);
+        }
+      }
+    }
+  }
+  createWeaknesses();
+}
+
+function changeWeaknessesBackgroundOnType(typeDamage, m) {
+  document.getElementById(`weakness-${typeDamage[m]}`).style.backgroundColor =
+    colours[typeDamage[m]];
+}
+
+function createWeaknesses() {
+  for (let m = 0; m < typeDamage.length; m++) {
+    getElement('weakness').innerHTML += /*html*/ `
+    <img class="typeIcon weaknessIcons" id="weakness-${typeDamage[m]}" src="./img/icons/${typeDamage[m]}.svg" alt="${typeDamage[m]}">
+    `;
+    changeWeaknessesBackgroundOnType(typeDamage, m);
+  }
+}
+
+async function getCurrentAbilities(i) {
+  for (let j = 0; j < pokemons[i].abilities.length; j++) {
+    let currentUrl = pokemons[i].abilities[j].ability.url;
+    let response = await fetchUrl(currentUrl);
+    currentAbilities.push(response);
+  }
+}
+
+function generatePokedexAbout(i) {
+  const pokemon = pokemons[i];
+  let about = getElement('aboutContainer');
+  about.innerHTML = '';
+  let description = getDescriptionByLanguage(i);
+  let genera = getGeneraByLanguage(i);
+  let height = pokemon.height / 10;
+  let weight = pokemon.weight / 10;
+  let ability1 = getAbility1ByLanguage(); //in helpers.js
+  let ability2 = getAbility2ByLanguage(); //in helpers.js
+  about.innerHTML = createPokedexAbout(
+    i,
+    description,
+    genera,
+    height,
+    weight,
+    ability1,
+    ability2
+  );
+
+  getWeaknesses();
+}
+
+function createPokedexAbout(
+  i,
+  description,
+  genera,
+  height,
+  weight,
+  ability1,
+  ability2
+) {
+  let height_calc = height * 2.54;
+  let height_inch = height_calc.toFixed(2).replace('.', "'");
+  let weight_calc = weight * 2.2046;
+  let weight_lbs = weight_calc.toFixed(1);
+  // changeHeadlinesByLanguage(i);
+  if (language === 'de') {
+    height_lang = height.toString().replace('.', ',');
+    weight_lang = weight.toString().replace('.', ',');
+  } else {
+    height_lang = height;
+    weight_lang = weight;
+  }
+  return /*html*/ `
+  <p id="textCurrentPokemon">${description.flavor_text}</p>
+  <table class="pokedexData">
+    <thead>
+      <tr>
+        <th colspan="2" id="pokedexData">${languagePack['pokedexData']}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>${languagePack['species']}</strong></td>
+        <td>${genera.genus}</td>
+      </tr>
+      <tr>
+        <td><strong>${languagePack['height']}</strong></td>
+        <td>${height_lang} m <span>(${height_inch}")</span></td>
+      </tr>
+      <tr>
+        <td><strong>${languagePack['weight']}</strong></td>
+        <td>${weight_lang} kg <span>(${weight_lbs}lbs)</span></td>
+      </tr>
+      <tr>
+        <td><strong>${languagePack['abilities']}</strong></td>
+        <td>1. ${ability1.name} <br><span>${ability2.name} (${languagePack['hiddenAbility']})</span> </td>
+      </tr>
+      <tr>
+        <td><strong>${languagePack['weaknesses']}</strong></td>
+        <td id="weakness"></td>
+      </tr>
+    </tbody>   
+  </table>
+  `;
+}
+
 function renderPokedexStats(i) {
+  let infoContainer = getElement('infoContainer');
+  infoContainer.innerHTML = '';
+  infoContainer.innerHTML = /*html*/ `
+  <div id="statsWrapper">
+    <div id="statsContainer"></div>
+    <div id="typeDefenseContainer"></div>
+  </div>
+  `;
+  statsActive(); //in helpers.js
   generatePokedexStats(i);
   generatePokedexTypeDef(i);
-  statsActive();
+  changeColorByTypeInStats(i); //in helpers.js
 }
 
 function generatePokedexStats(i) {
@@ -133,50 +285,85 @@ function generatePokedexStats(i) {
     stats.push(statsName.name, statValue);
   }
   statsContainer.innerHTML = createPokedexStats(stats);
-  changeColorOfType(i);
 }
 
 function createPokedexStats(stats) {
   return /*html*/ `
 <table class="blueTable">
-            <thead>
-              <tr>
-                <th id="tableHeadline">Base stats</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>${stats[0]}</strong></td>
-                <td id="pokedexHp">${stats[1]}</td>
-                <td><div id="barHp" class="bar" style="width: calc(${stats[1]}% / 2)"></div></td>
-              </tr>
-              <tr>
-                <td><strong>${stats[2]}</strong></td>
-                <td id="pokedexAtk">${stats[3]}</td>
-                <td><div id="barAtk" class="bar" style="width: calc(${stats[3]}% / 2)"></div></td>
-              </tr>
-              <tr>
-                <td><strong>${stats[4]}</strong></td>
-                <td id="pokedexDef">${stats[5]}</td>
-                <td><div id="barDef" class="bar" style="width: calc(${stats[5]}% / 2)"></div></td>
-              </tr>
-              <tr>
-                <td><strong>${stats[6]}</strong></td>
-                <td id="pokedexSpAtk">${stats[7]}</td>
-                <td><div id="barSpAtk" class="bar" style="width: calc(${stats[7]}% / 2)"></div></td>
-              </tr>
-              <tr>
-                <td><strong>${stats[8]}</strong></td>
-                <td id="pokedexSpDef">${stats[9]}</td>
-                <td><div id="barSpDef" class="bar" style="width: calc(${stats[9]}% / 2)"></div></td>
-              </tr>
-              <tr>
-                <td><strong>${stats[10]}</strong></td>
-                <td id="pokedexSpeed">${stats[11]}</td>
-                <td><div id="barSpeed" class="bar" style="width: calc(${stats[11]}% / 2)"></div></td>
-              </tr>
-            </tbody>
-          </table>
+      <thead>
+        <tr>
+          <th id="tableHeadline">Base stats</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>${stats[0]}</strong></td>
+          <td id="pokedexHp">${stats[1]}</td>
+          <td>
+            <div
+              id="barHp"
+              class="bar"
+              style="width: calc(${stats[1]}% / 2)"
+            ></div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>${stats[2]}</strong></td>
+          <td id="pokedexAtk">${stats[3]}</td>
+          <td>
+            <div
+              id="barAtk"
+              class="bar"
+              style="width: calc(${stats[3]}% / 2)"
+            ></div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>${stats[4]}</strong></td>
+          <td id="pokedexDef">${stats[5]}</td>
+          <td>
+            <div
+              id="barDef"
+              class="bar"
+              style="width: calc(${stats[5]}% / 2)"
+            ></div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>${stats[6]}</strong></td>
+          <td id="pokedexSpAtk">${stats[7]}</td>
+          <td>
+            <div
+              id="barSpAtk"
+              class="bar"
+              style="width: calc(${stats[7]}% / 2)"
+            ></div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>${stats[8]}</strong></td>
+          <td id="pokedexSpDef">${stats[9]}</td>
+          <td>
+            <div
+              id="barSpDef"
+              class="bar"
+              style="width: calc(${stats[9]}% / 2)"
+            ></div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>${stats[10]}</strong></td>
+          <td id="pokedexSpeed">${stats[11]}</td>
+          <td>
+            <div
+              id="barSpeed"
+              class="bar"
+              style="width: calc(${stats[11]}% / 2)"
+            ></div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 `;
 }
 
@@ -185,7 +372,7 @@ function generatePokedexTypeDef(i) {
   let typeDefContainer = getElement('typeDefenseContainer');
   typeDefContainer.innerHTML = '';
   typeDefContainer.innerHTML = /*html*/ `
-    <h4>Type defenses</h4>
+    <h4 id="headlineTypeDef">Type defenses</h4>
     <span>The effictiveness of each type on ${pokemonName.name}</span>
     <div id="typeDefense"></div>
     `;
@@ -195,7 +382,7 @@ function generatePokedexTypeDef(i) {
     let type = typesOfPokemon[j].name;
     typeDef.innerHTML += /*html*/ `
   <div  class="typeDefContainer">
-    <img id="${type}${j}" src="./img/icons/${type}.svg" alt="${type}">
+    <img class="typeIcon" id="${type}${j}" src="./img/icons/${type}.svg" alt="${type}">
     <div class="typeDef"><span id="${type}">1</span></div>
   </div>
   `;
@@ -210,11 +397,8 @@ function getTypeDefForPokedex(i, j) {
       let damageRelation = typesOfPokemon[k].damage_relations;
       typeDef.push({
         double_from: damageRelation.double_damage_from,
-        double_to: damageRelation.double_damage_to,
         half_from: damageRelation.half_damage_from,
-        half_to: damageRelation.half_damage_to,
         no_from: damageRelation.no_damage_from,
-        no_to: damageRelation.no_damage_to,
       });
     }
   }
@@ -242,15 +426,24 @@ function checkTypeDefForPokedex() {
       for (let l = 0; l < typeDef[j].half_from.length; l++) {
         if (typesOfPokemon[i].name === typeDef[j].half_from[l].name) {
           answer = getElement(type);
-          result = answer.innerHTML *= +0.5;
+          result = answer.innerHTML *= 0.5;
+        }
+      }
+      for (let m = 0; m <= typeDef[j].half_from.length; m++) {
+        if (typesOfPokemon[i].name === typeDef[j].no_from[m]?.name) {
+          getElement(type).innerHTML = 0;
         }
       }
     }
-    if (result === 0.5) {
-      answer.innerHTML = '&frac12;';
-    } else if (result === 0.25) {
-      answer.innerHTML = '&frac14;';
-    }
+    addFraction(result, answer);
+  }
+}
+
+function addFraction(result, answer) {
+  if (result === 0.5) {
+    answer.innerHTML = '&frac12;';
+  } else if (result === 0.25) {
+    answer.innerHTML = '&frac14;';
   }
 }
 
@@ -281,7 +474,6 @@ function pokedexTypes(i) {
     typeContainer.innerHTML += createPokedexTypesHTML(j, type, typeByLanguage);
     changePokedexBackgroundOnType(j, type); //in helpers.js
     getTypeDefForPokedex(i, j);
-    console.log(typeDef);
   }
 }
 

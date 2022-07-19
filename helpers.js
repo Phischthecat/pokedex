@@ -40,6 +40,43 @@ const bg_colours = {
   fairy: '#e0a3c2',
 };
 
+const headlines_german = {
+  about: '&Üuml;ber',
+  stats: 'Werte',
+  evolution: 'Entwicklung',
+  pokedexData: 'Pokédex Daten',
+  species: 'Spezies',
+  height: 'Gr&ouml;&szlig;e',
+  weight: 'Gewicht',
+  abilities: 'F&auml;higkeiten',
+  hiddenAbility: 'versteckte Fähigkeit',
+  weaknesses: 'Schw&auml;chen',
+  baseStats: 'Basiswerte',
+  typeDefense: 'Typ-Verteidigungen',
+  typeDefDescription: 'Die Wirksamkeit der einzelnen Typen auf',
+};
+
+const headlines_english = {
+  about: 'About',
+  stats: 'Stats',
+  evolution: 'Evolution',
+  pokedexData: 'Pokédex Data',
+  species: 'Species',
+  height: 'Height',
+  weight: 'Weight',
+  abilities: 'Abilities',
+  hiddenAbility: 'hidden ability',
+  weaknesses: 'Weaknesses',
+  baseStats: 'Base stats',
+  typeDefense: 'Type defenses ',
+  typeDefDescription: 'The effictiveness of each type on',
+};
+
+async function fetchUrl(url) {
+  let response = await fetch(url);
+  return (currentResponse = await response.json());
+}
+
 window.addEventListener('scroll', lazyLoad);
 let isLoading = false;
 function lazyLoad() {
@@ -88,6 +125,30 @@ function getTypeNameByLanguage(i, j) {
   }
 }
 
+function getDescriptionByLanguage(i) {
+  if (language == 'de') {
+    return pokemons[i].descriptions.find(
+      (n) => n.language.name == language && n.version.name == 'omega-ruby'
+    );
+  } else if (language == 'en') {
+    return pokemons[i].descriptions.find(
+      (n) => n.language.name == language && n.version.name == 'ruby'
+    );
+  }
+}
+
+function getGeneraByLanguage(i) {
+  return pokemons[i].genera.find((n) => n.language.name == language);
+}
+
+function getAbility1ByLanguage() {
+  return currentAbilities[0].names.find((n) => n.language.name == language);
+}
+
+function getAbility2ByLanguage() {
+  return currentAbilities[1].names.find((n) => n.language.name == language);
+}
+
 function getElement(id) {
   return document.getElementById(id);
 }
@@ -117,35 +178,45 @@ function changeBackgroundPokedex(i) {
   document.getElementById('headline').style.color = bg_color;
 }
 
-function changeColorOfType(i) {
-  document.getElementById(`tableHeadline`).style.color =
+function changeColorByTypeInStats(i) {
+  getElement('stats').style.color = colours[pokemons[i].types[0].type.name];
+  getElement('headlineTypeDef').style.color =
+    colours[pokemons[i].types[0].type.name];
+  getElement(`tableHeadline`).style.color =
     colours[pokemons[i].types[0].type.name];
   const bars = document.querySelectorAll('.bar');
   bars.forEach((bar) => {
     bar.style.backgroundColor = colours[pokemons[i].types[0].type.name];
   });
 }
+function changeColorByTypeInAbout(i) {
+  getElement('about').style.color = colours[pokemons[i].types[0].type.name];
+  getElement('pokedexData').style.color =
+    colours[pokemons[i].types[0].type.name];
+}
 
 function aboutActive() {
   getElement('about').classList.add('active');
   getElement('stats').classList.remove('active');
+  getElement('stats').style.color = 'var(--clr-white)';
   getElement('evolution').classList.remove('active');
+  getElement('evolution').style.color = 'var(--clr-white)';
 }
 
 function statsActive() {
   getElement('about').classList.remove('active');
+  getElement('about').style.color = 'var(--clr-white)';
   getElement('stats').classList.add('active');
   getElement('evolution').classList.remove('active');
+  getElement('evolution').style.color = 'var(--clr-white)';
 }
 
 function evolutionActive() {
   getElement('about').classList.remove('active');
+  getElement('about').style.color = 'var(--clr-white)';
   getElement('stats').classList.remove('active');
+  getElement('stats').style.color = 'var(--clr-white)';
   getElement('evolution').classList.add('active');
-}
-
-function firstLetterUppercase(id) {
-  return id.charAt(0).toUpperCase() + id.slice(1);
 }
 
 function slideOutPokemonInfo() {
