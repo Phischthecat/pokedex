@@ -7,7 +7,7 @@ let weaknesses = [];
 let currentAbilities = [];
 let language = 'en';
 let languagePack = headlines_english;
-let limit = 15; //id
+let limit = 30; //id
 
 async function loadPokemon() {
   for (let i = 1; i < 19; i++) {
@@ -30,21 +30,9 @@ async function loadPokemon() {
   }
   console.log(pokemons, pokemonStats, typesOfPokemon);
   renderPokemonCard();
-  renderPokedex(0);
-}
-
-function getPokemonNameByLanguage(i) {
-  return pokemons[i].names.find((n) => n.language.name == language);
-}
-
-function changePokemonNameByLanguage(i, id) {
-  let changedName = '';
-  for (let j = 0; j < pokemons[i][id].length; j++) {
-    if (pokemons[i][id][j].language.name == language) {
-      changedName = pokemons[i][id][j].name;
-    }
-  }
-  return changedName;
+  generatePokedexHeader(0);
+  renderPokedexStats(0);
+  await preloader();
 }
 
 function renderPokemonCard() {
@@ -65,32 +53,17 @@ function renderPokemonCard() {
   }
 }
 
-function generatePokemonCard(i, pokemonId, pokemonName, pokemonImg) {
-  return /*html*/ `
-  <div onclick="renderPokedex(${i})" class="pokemonCard" id="pokemonCard${i}">
-    <div class="pokemonInfo">
-      <div>#${pokemonId}</div>
-      <h3>${pokemonName.name}</h3>
-      <div id="pokemonTypes${i}" class="pokemonTypes"></div>
-    </div>
-    <div class="pokemonImgWrapper"><img class="pokemonImg" src='${pokemonImg}' alt="">
-  <div class="roundShadow"></div>
-  </div>
-  </div>
-  `;
-}
-
 function renderPokedex(i) {
   slideOutPokemonInfo();
   getElement('loader').classList.remove('hide');
+  generatePokedexHeader(i);
+  renderPokedexAbout(i);
   setTimeout(function () {
-    generatePokedexHeader(i);
-    renderPokedexAbout(i);
     slideInPokemonInfo();
     setTimeout(function () {
       getElement('loader').classList.add('hide');
     }, 200);
-  }, 1000);
+  }, 1500);
 }
 
 function generatePokedexHeader(i) {
@@ -183,16 +156,15 @@ async function getCurrentAbilities(i) {
 
 function generatePokedexAbout(i) {
   const pokemon = pokemons[i];
-  let about = getElement('aboutContainer');
+  let about = getElement('aboutContainer'); //in helpers.js
   about.innerHTML = '';
-  let description = getDescriptionByLanguage(i);
-  let genera = getGeneraByLanguage(i);
+  let description = getDescriptionByLanguage(i); //in helpers.js
+  let genera = getGeneraByLanguage(i); //in helpers.js
   let height = pokemon.height / 10;
   let weight = pokemon.weight / 10;
   let ability1 = getAbility1ByLanguage(); //in helpers.js
   let ability2 = getAbility2ByLanguage(); //in helpers.js
   about.innerHTML = createPokedexAbout(
-    i,
     description,
     genera,
     height,
@@ -205,7 +177,6 @@ function generatePokedexAbout(i) {
 }
 
 function createPokedexAbout(
-  i,
   description,
   genera,
   height,
@@ -217,7 +188,6 @@ function createPokedexAbout(
   let height_inch = height_calc.toFixed(2).replace('.', "'");
   let weight_calc = weight * 2.2046;
   let weight_lbs = weight_calc.toFixed(1);
-  // changeHeadlinesByLanguage(i);
   if (language === 'de') {
     height_lang = height.toString().replace('.', ',');
     weight_lang = weight.toString().replace('.', ',');
@@ -225,6 +195,7 @@ function createPokedexAbout(
     height_lang = height;
     weight_lang = weight;
   }
+
   return /*html*/ `
   <p id="textCurrentPokemon">${description.flavor_text}</p>
   <table class="pokedexData">
@@ -292,7 +263,7 @@ function createPokedexStats(stats) {
 <table class="blueTable">
       <thead>
         <tr>
-          <th id="tableHeadline">Base stats</th>
+          <th colspan="3" id="tableHeadline">Base stats</th>
         </tr>
       </thead>
       <tbody>
@@ -367,6 +338,21 @@ function createPokedexStats(stats) {
 `;
 }
 
+function generatePokemonCard(i, pokemonId, pokemonName, pokemonImg) {
+  return /*html*/ `
+  <div onclick="renderPokedex(${i})" class="pokemonCard" id="pokemonCard${i}">
+    <div class="pokemonInfo">
+      <div>#${pokemonId}</div>
+      <h3>${pokemonName.name}</h3>
+      <div id="pokemonTypes${i}" class="pokemonTypes"></div>
+    </div>
+    <div class="pokemonImgWrapper"><img class="pokemonImg" src='${pokemonImg}' alt="">
+  <div class="roundShadow"></div>
+  </div>
+  </div>
+  `;
+}
+
 function generatePokedexTypeDef(i) {
   let pokemonName = getPokemonNameByLanguage(i);
   let typeDefContainer = getElement('typeDefenseContainer');
@@ -389,27 +375,6 @@ function generatePokedexTypeDef(i) {
     changeTypeDefBackgroundOnType(j, type);
   }
   checkTypeDefForPokedex();
-}
-
-function getTypeDefForPokedex(i, j) {
-  for (let k = 0; k < typesOfPokemon.length; k++) {
-    if (pokemons[i].types[j].type.name === typesOfPokemon[k].name) {
-      let damageRelation = typesOfPokemon[k].damage_relations;
-      typeDef.push({
-        double_from: damageRelation.double_damage_from,
-        half_from: damageRelation.half_damage_from,
-        no_from: damageRelation.no_damage_from,
-      });
-    }
-  }
-}
-
-function getTypeNameByLanguage(i, j) {
-  for (let k = 0; k < typesOfPokemon.length; k++) {
-    if (pokemons[i].types[j].type.name === typesOfPokemon[k].name) {
-      return typesOfPokemon[k].names.find((n) => n.language.name == language);
-    }
-  }
 }
 
 function checkTypeDefForPokedex() {

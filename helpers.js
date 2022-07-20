@@ -72,6 +72,18 @@ const headlines_english = {
   typeDefDescription: 'The effictiveness of each type on',
 };
 
+async function preloader() {
+  getElement('preLoader').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  setTimeout(function () {
+    getElement('preLoader').classList.add('slideToTop');
+    document.body.style.overflow = 'auto';
+    setTimeout(function () {
+      getElement('preLoader').style.display = 'none';
+    }, 1000);
+  }, 1.0 * 1000);
+}
+
 async function fetchUrl(url) {
   let response = await fetch(url);
   return (currentResponse = await response.json());
@@ -87,9 +99,9 @@ function lazyLoad() {
 
   let percent = ((h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight)) * 100;
 
-  if (percent > 80 && !isLoading) {
+  if (percent > 30 && !isLoading) {
     isLoading = true;
-    limit += 15;
+    limit += 10;
     loadMorePokemons();
   }
 }
@@ -111,6 +123,10 @@ function buildMyPokemonArray(currentPokemon, currentPokemonSpecies) {
     genera: currentPokemonSpecies.genera,
     evolutionChain: currentPokemonSpecies.evolution_chain,
   });
+}
+
+function getPokemonNameByLanguage(i) {
+  return pokemons[i].names.find((n) => n.language.name == language);
 }
 
 function getStatsNameByLanguage(i) {
@@ -147,6 +163,19 @@ function getAbility1ByLanguage() {
 
 function getAbility2ByLanguage() {
   return currentAbilities[1].names.find((n) => n.language.name == language);
+}
+
+function getTypeDefForPokedex(i, j) {
+  for (let k = 0; k < typesOfPokemon.length; k++) {
+    if (pokemons[i].types[j].type.name === typesOfPokemon[k].name) {
+      let damageRelation = typesOfPokemon[k].damage_relations;
+      typeDef.push({
+        double_from: damageRelation.double_damage_from,
+        half_from: damageRelation.half_damage_from,
+        no_from: damageRelation.no_damage_from,
+      });
+    }
+  }
 }
 
 function getElement(id) {

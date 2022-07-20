@@ -30,6 +30,7 @@ body {
   font-family: 'Gantari', sans-serif;
   background: var(--clr-bg-grey);
   min-height: 120vh;
+  position: relative;
 }
 
 .content {
@@ -452,9 +453,90 @@ td span {
 
 /* ----------------------------------
 
-          ANIMATIONS
+          PRELOADER
 
 ------------------------------------*/
+
+#preLoader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  background: var(--clr-white)
+    radial-gradient(var(--clr-bg-hover), var(--clr-bg-fighting));
+  overflow: hidden;
+  z-index: 999;
+}
+
+.slideToTop {
+  animation: slideToTop 1000ms;
+  animation-fill-mode: forwards;
+}
+
+#preLoader img {
+  height: 50%;
+  animation: pulse 2.5s ease-in-out infinite;
+  -webkit-animation: pulse 2.5s ease-in-out infinite;
+}
+
+/* ----------------------------------
+
+ANIMATIONS
+
+------------------------------------*/
+
+@keyframes slideToTop {
+  from {
+    top: 0;
+  }
+  to {
+    top: -1000px;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1) rotate(-5deg);
+  }
+  25% {
+    transform: scale(1.5) rotate(15deg);
+  }
+  50% {
+    transform: scale(1) rotate(-5deg);
+  }
+  75% {
+    transform: scale(1.5) rotate(-15deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(-5deg);
+  }
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.5);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  75% {
+    transform: scale(1.4);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
 
 .slide-out {
   animation: slideOut ease-in-out 0.35s;
