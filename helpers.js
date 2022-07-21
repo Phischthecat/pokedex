@@ -72,9 +72,19 @@ const headlines_english = {
   typeDefDescription: 'The effictiveness of each type on',
 };
 
+async function fetchUrl(url) {
+  let response = await fetch(url);
+  return (currentResponse = await response.json());
+}
+
+function preloading() {
+  getElement('preLoader').style.display = 'flex'; //preloader
+  document.body.style.overflow = 'hidden'; //preloader
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+
 async function preloader() {
-  getElement('preLoader').style.display = 'flex';
-  document.body.style.overflow = 'hidden';
   setTimeout(function () {
     getElement('preLoader').classList.add('slideToTop');
     document.body.style.overflow = 'auto';
@@ -84,14 +94,10 @@ async function preloader() {
   }, 1.0 * 1000);
 }
 
-async function fetchUrl(url) {
-  let response = await fetch(url);
-  return (currentResponse = await response.json());
-}
-
 window.addEventListener('scroll', lazyLoad);
 let isLoading = false;
 function lazyLoad() {
+  getElement('pokemonLoader').classList.remove('hide');
   let h = document.documentElement;
   let b = document.body;
   let st = 'scrollTop';
@@ -99,10 +105,27 @@ function lazyLoad() {
 
   let percent = ((h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight)) * 100;
 
-  if (percent > 30 && !isLoading) {
+  if (percent > 70 && !isLoading) {
     isLoading = true;
-    limit += 10;
+    limit += limit;
     loadMorePokemons();
+  }
+}
+
+window.onscroll = function () {
+  scrollFunction();
+};
+
+function scrollFunction() {
+  // blendet den top-up Button aus
+  let mybutton = document.getElementById('myBtn');
+  if (
+    document.body.scrollTop > 300 ||
+    document.documentElement.scrollTop > 300
+  ) {
+    mybutton.classList.remove('d-none');
+  } else {
+    mybutton.classList.add('d-none');
   }
 }
 
@@ -125,103 +148,12 @@ function buildMyPokemonArray(currentPokemon, currentPokemonSpecies) {
   });
 }
 
-function getPokemonNameByLanguage(i) {
-  return pokemons[i].names.find((n) => n.language.name == language);
-}
-
-function getStatsNameByLanguage(i) {
-  return pokemonStats[i].names.find((n) => n.language.name == language);
-}
-
-function getTypeNameByLanguage(i, j) {
-  for (let k = 0; k < typesOfPokemon.length; k++) {
-    if (pokemons[i].types[j].type.name === typesOfPokemon[k].name) {
-      return typesOfPokemon[k].names.find((n) => n.language.name == language);
-    }
+function addFraction(result, answer) {
+  if (result === 0.5) {
+    answer.innerHTML = '&frac12;';
+  } else if (result === 0.25) {
+    answer.innerHTML = '&frac14;';
   }
-}
-
-function getDescriptionByLanguage(i) {
-  if (language == 'de') {
-    return pokemons[i].descriptions.find(
-      (n) => n.language.name == language && n.version.name == 'omega-ruby'
-    );
-  } else if (language == 'en') {
-    return pokemons[i].descriptions.find(
-      (n) => n.language.name == language && n.version.name == 'ruby'
-    );
-  }
-}
-
-function getGeneraByLanguage(i) {
-  return pokemons[i].genera.find((n) => n.language.name == language);
-}
-
-function getAbility1ByLanguage() {
-  return currentAbilities[0].names.find((n) => n.language.name == language);
-}
-
-function getAbility2ByLanguage() {
-  return currentAbilities[1].names.find((n) => n.language.name == language);
-}
-
-function getTypeDefForPokedex(i, j) {
-  for (let k = 0; k < typesOfPokemon.length; k++) {
-    if (pokemons[i].types[j].type.name === typesOfPokemon[k].name) {
-      let damageRelation = typesOfPokemon[k].damage_relations;
-      typeDef.push({
-        double_from: damageRelation.double_damage_from,
-        half_from: damageRelation.half_damage_from,
-        no_from: damageRelation.no_damage_from,
-      });
-    }
-  }
-}
-
-function getElement(id) {
-  return document.getElementById(id);
-}
-
-function createIdFormat(id) {
-  return id.toString().padStart(3, '0');
-}
-
-function changePokemonBackgroundOnType(i, j, type) {
-  document.getElementById(`pokemonType${i}-${j}`).style.backgroundColor =
-    colours[type];
-}
-
-function changePokedexBackgroundOnType(j, type) {
-  document.getElementById(`pokedexType${j}`).style.backgroundColor =
-    colours[type];
-}
-
-function changeTypeDefBackgroundOnType(j, type) {
-  document.getElementById(`${type}${j}`).style.backgroundColor = colours[type];
-}
-
-function changeBackgroundPokedex(i) {
-  let bg_type = pokemons[i].types[0].type.name;
-  let bg_color = bg_colours[bg_type];
-  document.getElementById('pokedexHeader').style.backgroundColor = bg_color;
-  document.getElementById('headline').style.color = bg_color;
-}
-
-function changeColorByTypeInStats(i) {
-  getElement('stats').style.color = colours[pokemons[i].types[0].type.name];
-  getElement('headlineTypeDef').style.color =
-    colours[pokemons[i].types[0].type.name];
-  getElement(`tableHeadline`).style.color =
-    colours[pokemons[i].types[0].type.name];
-  const bars = document.querySelectorAll('.bar');
-  bars.forEach((bar) => {
-    bar.style.backgroundColor = colours[pokemons[i].types[0].type.name];
-  });
-}
-function changeColorByTypeInAbout(i) {
-  getElement('about').style.color = colours[pokemons[i].types[0].type.name];
-  getElement('pokedexData').style.color =
-    colours[pokemons[i].types[0].type.name];
 }
 
 function aboutActive() {

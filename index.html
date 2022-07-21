@@ -13,11 +13,16 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <script src="./changeColor.js"></script>
+    <script src="./check.js"></script>
+    <script src="./get.js"></script>
+    <script src="./create.js"></script>
+    <script src="./generate.js"></script>
     <script src="./helpers.js"></script>
     <script src="./script.js"></script>
   </head>
   <body onload="loadPokemon();">
-    <div id="preLoader" class="pre-loader">
+    <div id="preLoader" class="hide pre-loader">
       <img src="./img/pokemon-ge9fa64443_1280.png" alt="pre-loader-img" />
     </div>
     <div class="header">
@@ -31,6 +36,14 @@
     <div class="content">
       <div class="allPokemonContainer">
         <div id="pokemonContainer"></div>
+        <div id="pokemonLoader" class="hide pokemonLoader">
+          <div class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
       </div>
 
       <div class="pokedexContainer">
