@@ -6,7 +6,7 @@ function createPokemonTypesHTML(i, j, type, typeByLanguage) {
   return /*html*/ `
     <div id="pokemonType${i}-${j}" class="type typeStyling">
     <img src="./img/icons/${type}.svg" />
-      <span>${typeByLanguage.name}</span>
+      <span class="typeSpan">${typeByLanguage.name}</span>
       </div>
     `;
 }

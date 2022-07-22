@@ -6,21 +6,59 @@ let typeDamage = [];
 let weaknesses = [];
 let currentAbilities = [];
 let language = 'en';
-let languagePack = headlines_english;
+let languagePack;
 let limit = 30; //id
 
-async function loadPokemon() {
+function checkChoosenLanguage() {
+  if (language === 'de') {
+    languagePack = headlines_german;
+  } else {
+    languagePack = headlines_english;
+  }
+}
+
+async function start() {
   //preloading();
+  checkChoosenLanguage();
+  changeInputPlaceholderByLanguage();
+  await loadPokemon();
+  renderPokemonCard();
+  generatePokedexHeader(0);
+  renderPokedexStats(0);
+  //await preloader();
+}
+
+async function loadPokemon() {
+  await loadTypes();
+  await loadStats();
+  await loadAllPokemonInfos();
+}
+
+async function loadTypes() {
   for (let i = 1; i < 19; i++) {
     let url_types = `https://pokeapi.co/api/v2/type/` + i;
     let currentPokemon = await fetchUrl(url_types);
     typesOfPokemon.push(currentPokemon);
   }
+}
+
+async function loadStats() {
   for (let i = 1; i < 7; i++) {
     let url_stats = `https://pokeapi.co/api/v2/stat/` + i;
     let currentPokemon = await fetchUrl(url_stats);
     pokemonStats.push(currentPokemon);
   }
+}
+
+async function loadStats() {
+  for (let i = 1; i < 7; i++) {
+    let url_stats = `https://pokeapi.co/api/v2/stat/` + i;
+    let currentPokemon = await fetchUrl(url_stats);
+    pokemonStats.push(currentPokemon);
+  }
+}
+
+async function loadAllPokemonInfos() {
   for (let i = 1; i <= limit; i++) {
     let url = `https://pokeapi.co/api/v2/pokemon/` + i;
     let url_species = `https://pokeapi.co/api/v2/pokemon-species/` + i;
@@ -29,10 +67,6 @@ async function loadPokemon() {
     let currentPokemonSpecies = await fetchUrl(url_species);
     buildMyPokemonArray(currentPokemon, currentPokemonSpecies); //in helpers.js
   }
-  renderPokemonCard();
-  generatePokedexHeader(0);
-  renderPokedexStats(0);
-  //await preloader();
 }
 
 function renderPokemonCard() {
@@ -54,6 +88,7 @@ function renderPokemonCard() {
 }
 
 function renderPokedex(i) {
+  getElement('pokedexContainer').style.display = 'flex';
   slideOutPokemonInfo();
   getElement('loader').classList.remove('hide');
   generatePokedexHeader(i);

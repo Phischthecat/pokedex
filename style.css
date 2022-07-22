@@ -26,16 +26,22 @@
   box-sizing: border-box;
 }
 
+html {
+  overflow: scroll;
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: 'Gantari', sans-serif;
   background: var(--clr-bg-grey);
-  min-height: 120vh;
+  min-height: 100vh;
   position: relative;
 }
 
 .content {
   display: flex;
   justify-content: space-between;
+  margin-top: 105px;
 }
 
 /* ----------------------------------
@@ -45,12 +51,12 @@ body {
 ------------------------------------*/
 
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
   display: flex;
   justify-content: center;
   padding: 25px 0;
-  margin-bottom: 15px;
+
   width: 100%;
   border-radius: 0 0 var(--border-radius) var(--border-radius);
   background: var(--clr-bg-grey);
@@ -64,8 +70,12 @@ body {
   outline: none;
   width: 350px;
   height: 35px;
+  margin: 0 15px;
   padding-left: 15px;
   font-size: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ----------------------------------
@@ -89,6 +99,7 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   margin-right: 495px;
+  margin-left: 30px;
 }
 
 .pokemonCard {
@@ -165,6 +176,7 @@ body {
   cursor: pointer;
   margin-bottom: -30px;
   padding: 10px 20px;
+  text-overflow: ellipsis;
 }
 
 .pokedexMenu ul li:hover {
@@ -224,6 +236,10 @@ body {
 
 ------------------------------------*/
 
+.backBtn {
+  display: none;
+}
+
 #types img {
   height: 15px;
 }
@@ -251,6 +267,7 @@ body {
   display: flex;
   justify-content: center;
   mask-image: linear-gradient(white 0, transparent 60%);
+  -webkit-mask-image: linear-gradient(white 0, transparent 60%);
 }
 
 #headline {
@@ -493,6 +510,28 @@ td span {
 
 /* ----------------------------------
 
+ARROW UP
+
+------------------------------------*/
+.mybutton {
+  position: fixed;
+  bottom: 60px;
+  left: 5px;
+  transform: rotate(90deg);
+  cursor: pointer;
+  z-index: 999;
+}
+
+.mybutton img {
+  height: 40px;
+}
+
+.mybutton:hover img {
+  transform: scale(1.25);
+}
+
+/* ----------------------------------
+
 ANIMATIONS
 
 ------------------------------------*/
@@ -508,39 +547,37 @@ ANIMATIONS
 
 @keyframes pulse {
   0% {
-    transform: scale(1) rotate(-5deg);
+    transform: scale(1) rotate(0deg);
   }
   25% {
-    transform: scale(1.5) rotate(15deg);
+    transform: scale(1.5) rotate(3deg);
   }
   50% {
-    transform: scale(1) rotate(-5deg);
+    transform: scale(1) rotate(0deg);
   }
   75% {
-    transform: scale(1.5) rotate(-15deg);
+    transform: scale(1.5) rotate(-6deg);
   }
-
   100% {
-    transform: scale(1) rotate(-5deg);
+    transform: scale(1) rotate(0deg);
   }
 }
 
 @-webkit-keyframes pulse {
   0% {
-    transform: scale(1);
+    transform: scale(1) rotate(0deg);
   }
   25% {
-    transform: scale(1.5);
+    transform: scale(1.5) rotate(3deg);
   }
   50% {
-    transform: scale(0.9);
+    transform: scale(1) rotate(0deg);
   }
   75% {
-    transform: scale(1.4);
+    transform: scale(1.5) rotate(-6deg);
   }
-
   100% {
-    transform: scale(1);
+    transform: scale(1) rotate(0deg);
   }
 }
 
@@ -571,6 +608,12 @@ ANIMATIONS
     right: 30px;
   }
 }
+
+/* *****************
+********************
+        LOADER
+********************
+********************/
 
 .lds-ellipsis {
   display: inline-block;
@@ -625,5 +668,33 @@ ANIMATIONS
   }
   100% {
     transform: translate(24px, 0);
+  }
+}
+
+/* *****************
+********************
+       SCROLLBAR
+********************
+********************/
+::-webkit-scrollbar {
+  width: 5px;
+  height: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 100vw;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  margin-block: 30px;
+  border-radius: 100vw;
+}
+
+@supports (scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.1)) {
+  * {
+    scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.1);
+    scrollbar-width: auto;
   }
 }

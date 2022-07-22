@@ -13,6 +13,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="responsive.css" />
     <script src="./changeColor.js"></script>
     <script src="./check.js"></script>
     <script src="./get.js"></script>
@@ -21,22 +22,26 @@
     <script src="./helpers.js"></script>
     <script src="./script.js"></script>
   </head>
-  <body onload="loadPokemon();">
+  <body onload="start();">
     <div id="preLoader" class="hide pre-loader">
       <img src="./img/pokemon-ge9fa64443_1280.png" alt="pre-loader-img" />
     </div>
+    <div id="myBtn" class="mybutton hide" onclick="toTheTop()">
+      <img src="./img/arrow.png" alt="arrow-up" />
+    </div>
+
     <div class="header">
       <input
         class="searchBar"
         id="search"
         type="search"
-        placeholder="Find your pokemon ..."
+        placeholder="What Pokemon are you looking for?"
       />
     </div>
     <div class="content">
       <div class="allPokemonContainer">
         <div id="pokemonContainer"></div>
-        <div id="pokemonLoader" class="hide pokemonLoader">
+        <div id="pokemonLoader" class="pokemonLoader">
           <div class="lds-ellipsis">
             <div></div>
             <div></div>
@@ -46,7 +51,7 @@
         </div>
       </div>
 
-      <div class="pokedexContainer">
+      <div id="pokedexContainer" class="pokedexContainer">
         <div id="loader" class="hide positionLoader">
           <div class="lds-ellipsis">
             <div></div>
@@ -56,6 +61,13 @@
           </div>
         </div>
         <div id="current-pokemon" class="wrapper">
+          <div id="back" class="backBtn">
+            <img
+              src="./img/left-arrow.png"
+              alt="back"
+              onclick="closePokedex()"
+            />
+          </div>
           <div class="headlineContainer">
             <h1 id="headline"></h1>
           </div>

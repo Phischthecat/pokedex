@@ -41,6 +41,7 @@ const bg_colours = {
 };
 
 const headlines_german = {
+  placeholder: 'Nach welchem Pokemon suchst du?',
   about: '&Üuml;ber',
   stats: 'Werte',
   evolution: 'Entwicklung',
@@ -57,6 +58,7 @@ const headlines_german = {
 };
 
 const headlines_english = {
+  placeholder: 'What Pokemon are you looking for?',
   about: 'About',
   stats: 'Stats',
   evolution: 'Evolution',
@@ -80,36 +82,44 @@ async function fetchUrl(url) {
 function preloading() {
   getElement('preLoader').style.display = 'flex'; //preloader
   document.body.style.overflow = 'hidden'; //preloader
-  document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
+  toTheTop();
 }
 
 async function preloader() {
   setTimeout(function () {
     getElement('preLoader').classList.add('slideToTop');
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = 'scroll';
     setTimeout(function () {
       getElement('preLoader').style.display = 'none';
     }, 1000);
   }, 1.0 * 1000);
 }
 
-window.addEventListener('scroll', lazyLoad);
-let isLoading = false;
-function lazyLoad() {
-  getElement('pokemonLoader').classList.remove('hide');
-  let h = document.documentElement;
-  let b = document.body;
-  let st = 'scrollTop';
-  let sh = 'scrollHeight';
+// window.addEventListener('scroll', lazyLoad);
+// let isLoading = false;
+// function lazyLoad() {
+//   getElement('pokemonLoader').classList.remove('hide');
+//   let h = document.documentElement;
+//   let b = document.body;
+//   let st = 'scrollTop';
+//   let sh = 'scrollHeight';
 
-  let percent = ((h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight)) * 100;
+//   let percent = ((h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight)) * 100;
 
-  if (percent > 70 && !isLoading) {
-    isLoading = true;
-    limit += limit;
-    loadMorePokemons();
-  }
+//   if (percent > 70 && !isLoading) {
+//     isLoading = true;
+//     limit += 50;
+//     loadMorePokemons();
+//   }
+// }
+
+function closePokedex() {
+  getElement('pokedexContainer').style.display = 'none';
+}
+
+function toTheTop() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
 }
 
 window.onscroll = function () {
@@ -123,10 +133,14 @@ function scrollFunction() {
     document.body.scrollTop > 300 ||
     document.documentElement.scrollTop > 300
   ) {
-    mybutton.classList.remove('d-none');
+    mybutton.classList.remove('hide');
   } else {
-    mybutton.classList.add('d-none');
+    mybutton.classList.add('hide');
   }
+}
+
+function changeInputPlaceholderByLanguage() {
+  getElement('search').placeholder = languagePack['placeholder'];
 }
 
 function buildMyPokemonArray(currentPokemon, currentPokemonSpecies) {
