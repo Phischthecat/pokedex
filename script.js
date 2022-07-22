@@ -7,7 +7,7 @@ let weaknesses = [];
 let currentAbilities = [];
 let language = 'en';
 let languagePack;
-let limit = 30; //id
+let limit = 15; //id
 
 function checkChoosenLanguage() {
   if (language === 'de') {
@@ -18,44 +18,41 @@ function checkChoosenLanguage() {
 }
 
 async function start() {
-  //preloading();
+  preloading();
   checkChoosenLanguage();
   changeInputPlaceholderByLanguage();
   await loadPokemon();
   renderPokemonCard();
   generatePokedexHeader(0);
   renderPokedexStats(0);
-  //await preloader();
+  await preloader();
 }
 
 async function loadPokemon() {
   await loadTypes();
   await loadStats();
   await loadAllPokemonInfos();
+  console.log(pokemons, pokemonStats, typesOfPokemon);
 }
 
 async function loadTypes() {
+  let promises = [];
   for (let i = 1; i < 19; i++) {
     let url_types = `https://pokeapi.co/api/v2/type/` + i;
-    let currentPokemon = await fetchUrl(url_types);
-    typesOfPokemon.push(currentPokemon);
+    promises.push(fetchUrl(url_types));
   }
+  // resolved all promises simultaneously
+  typesOfPokemon = await Promise.all(promises);
 }
 
 async function loadStats() {
+  let promises = [];
   for (let i = 1; i < 7; i++) {
     let url_stats = `https://pokeapi.co/api/v2/stat/` + i;
-    let currentPokemon = await fetchUrl(url_stats);
-    pokemonStats.push(currentPokemon);
+    promises.push(fetchUrl(url_stats));
   }
-}
-
-async function loadStats() {
-  for (let i = 1; i < 7; i++) {
-    let url_stats = `https://pokeapi.co/api/v2/stat/` + i;
-    let currentPokemon = await fetchUrl(url_stats);
-    pokemonStats.push(currentPokemon);
-  }
+  // resolved all promises simultaneously
+  pokemonStats = await Promise.all(promises);
 }
 
 async function loadAllPokemonInfos() {
@@ -68,6 +65,21 @@ async function loadAllPokemonInfos() {
     buildMyPokemonArray(currentPokemon, currentPokemonSpecies); //in helpers.js
   }
 }
+
+// async function loadAllPokemonInfos() {
+//   let promises_pokemon = [];
+//   let promises_pokemonSpecies = [];
+//   for (let i = 1; i <= limit; i++) {
+//     let url = `https://pokeapi.co/api/v2/pokemon/` + i;
+//     let url_species = `https://pokeapi.co/api/v2/pokemon-species/` + i;
+//     promises_pokemon.push(fetchUrl(url));
+//     promises_pokemonSpecies.push(fetchUrl(url_species));
+//   }
+//   // resolved all promises simultaneously
+//   pokemons = await Promise.all(promises_pokemon);
+//   pokemonSpecies = await Promise.all(promises_pokemonSpecies);
+//   console.log(pokemons, pokemonSpecies);
+// }
 
 function renderPokemonCard() {
   let pokemon_container = getElement('pokemonContainer');

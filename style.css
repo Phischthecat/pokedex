@@ -126,6 +126,7 @@ body {
 
 .type img {
   height: 15px;
+  width: 100%;
 }
 
 .pokemonImgWrapper {
@@ -242,6 +243,7 @@ body {
 
 #types img {
   height: 15px;
+  width: 100%;
 }
 
 .pokedexContainer {
@@ -299,7 +301,6 @@ body {
 
 #pokemonImg {
   height: 120px;
-  width: 120px;
   margin-right: 40px;
   margin-left: 50px;
 }
@@ -524,6 +525,7 @@ ARROW UP
 
 .mybutton img {
   height: 40px;
+  width: 100%;
 }
 
 .mybutton:hover img {
