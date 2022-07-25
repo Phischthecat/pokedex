@@ -46,21 +46,41 @@ body {
 
 /* ----------------------------------
 
-              POKEMON CARD
+            NAVBAR
 
 ------------------------------------*/
+.logoContainer {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logo {
+  position: relative;
+  margin-top: -7px;
+  font-family: 'Pokemon Solid';
+  color: var(--clr-white);
+  text-shadow: 1px 1px 1px var(--clr-black), 1px -1px 1px var(--clr-black),
+    -1px 1px 1px var(--clr-black), -1px -1px 1px var(--clr-black);
+  padding: 0 10px;
+  font-size: 22px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .header {
   position: fixed;
   top: 0;
   display: flex;
   justify-content: center;
-  padding: 25px 0;
+  align-items: center;
+  padding: 15px;
 
   width: 100%;
-  border-radius: 0 0 var(--border-radius) var(--border-radius);
+
   background: var(--clr-bg-grey);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
   z-index: 4;
 }
 
@@ -76,6 +96,28 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.languageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#english {
+  height: 40px;
+  width: auto;
+  border-radius: 100% 0 0 100%;
+  -webkit-border-radius: 100% 0 0 100%;
+  filter: brightness(1);
+}
+
+#german {
+  height: 40px;
+  width: auto;
+  border-radius: 0 100% 100% 0;
+  -webkit-border-radius: 0 100% 100% 0;
+  filter: brightness(0.5);
 }
 
 /* ----------------------------------
@@ -196,7 +238,7 @@ body {
 .active::before {
   content: '';
   position: absolute;
-  left: -29px;
+  left: -31%;
   top: 0;
   height: 75px;
   width: 30px;
@@ -207,7 +249,7 @@ body {
 .active::after {
   content: '';
   position: absolute;
-  right: -29px;
+  right: -31%;
   top: 0;
   height: 75px;
   width: 30px;
@@ -485,15 +527,13 @@ td span {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   width: 100%;
-  background: var(--clr-white)
-    radial-gradient(var(--clr-bg-hover), var(--clr-bg-fighting));
+  background: var(--clr-bg-grey);
+  /* radial-gradient(var(--clr-bg-hover), var(--clr-bg-fighting)); */
   overflow: hidden;
   z-index: 999;
 }

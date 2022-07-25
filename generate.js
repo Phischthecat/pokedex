@@ -19,16 +19,17 @@ function generatePokedexHeader(i) {
   let pokemonName = getPokemonNameByLanguage(i); //in helpers.js
   getElement('headline').innerHTML = pokemonName.name;
   getElement('pokemonName').innerHTML = pokemonName.name;
-  getElement('pokemonImg').src = pokemon.spritePokedex;
+  getElement('pokemonImg').src =
+    pokemon.sprites.other['official-artwork'].front_default;
   getElement('pokemonId').innerHTML = `#${pokemonId}`;
   generatePokedexTypes(i);
   changeBackgroundPokedex(i); //in helpers.js
   getElement('pokedexMenu').innerHTML = /*html*/ `
     <div class="pokedexMenu">
                 <ul>
-                  <li class="menu left" id="about" onclick="renderPokedexAbout(${i})">About</li>
-                  <li class="menu middle" id="stats" onclick="renderPokedexStats(${i})">Stats</li>
-                  <li class="menu right" id="evolution">Evolution</li>
+                  <li class="menu left" id="about" onclick="renderPokedexAbout(${i})">${languagePack['about']}</li>
+                  <li class="menu middle" id="stats" onclick="renderPokedexStats(${i})">${languagePack['stats']}</li>
+                  <li class="menu right" id="evolution">${languagePack['evolution']}</li>
                 </ul>
               </div>
     `;
@@ -74,8 +75,8 @@ function generatePokedexTypeDef(i) {
   let typeDefContainer = getElement('typeDefenseContainer');
   typeDefContainer.innerHTML = '';
   typeDefContainer.innerHTML = /*html*/ `
-      <h4 id="headlineTypeDef">Type defenses</h4>
-      <span>The effictiveness of each type on ${pokemonName.name}</span>
+      <h4 id="headlineTypeDef">${languagePack['typeDefense']}</h4>
+      <span>${languagePack['typeDefDescription']} ${pokemonName.name}</span>
       <div id="typeDefense"></div>
       `;
   let typeDef = getElement('typeDefense');

@@ -3,7 +3,7 @@ function getElement(id) {
 }
 
 function getPokemonNameByLanguage(i) {
-  return pokemons[i].names.find((n) => n.language.name == language);
+  return pokemonSpecies[i].names.find((n) => n.language.name == language);
 }
 
 function getStatsNameByLanguage(i) {
@@ -20,18 +20,18 @@ function getTypeNameByLanguage(i, j) {
 
 function getDescriptionByLanguage(i) {
   if (language == 'de') {
-    return pokemons[i].descriptions.find(
+    return pokemonSpecies[i].flavor_text_entries.find(
       (n) => n.language.name == language && n.version.name == 'omega-ruby'
     );
   } else if (language == 'en') {
-    return pokemons[i].descriptions.find(
+    return pokemonSpecies[i].flavor_text_entries.find(
       (n) => n.language.name == language && n.version.name == 'ruby'
     );
   }
 }
 
 function getGeneraByLanguage(i) {
-  return pokemons[i].genera.find((n) => n.language.name == language);
+  return pokemonSpecies[i].genera.find((n) => n.language.name == language);
 }
 
 function getAbility1ByLanguage() {

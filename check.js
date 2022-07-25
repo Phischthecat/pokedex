@@ -1,3 +1,11 @@
+function checkChoosenLanguage() {
+  if (language === 'de') {
+    languagePack = headlines_german;
+  } else {
+    languagePack = headlines_english;
+  }
+}
+
 function checkTypeDefForPokedex() {
   for (let i = 0; i < typesOfPokemon.length; i++) {
     let type = typesOfPokemon[i].name;

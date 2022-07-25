@@ -42,7 +42,7 @@ const bg_colours = {
 
 const headlines_german = {
   placeholder: 'Nach welchem Pokemon suchst du?',
-  about: '&Üuml;ber',
+  about: '&Uuml;ber',
   stats: 'Werte',
   evolution: 'Entwicklung',
   pokedexData: 'Pokédex Daten',
@@ -53,7 +53,7 @@ const headlines_german = {
   hiddenAbility: 'versteckte Fähigkeit',
   weaknesses: 'Schw&auml;chen',
   baseStats: 'Basiswerte',
-  typeDefense: 'Typ-Verteidigungen',
+  typeDefense: 'Typen-Verteidigung',
   typeDefDescription: 'Die Wirksamkeit der einzelnen Typen auf',
 };
 
@@ -70,7 +70,7 @@ const headlines_english = {
   hiddenAbility: 'hidden ability',
   weaknesses: 'Weaknesses',
   baseStats: 'Base stats',
-  typeDefense: 'Type defenses ',
+  typeDefense: 'Type defenses',
   typeDefDescription: 'The effictiveness of each type on',
 };
 
@@ -79,20 +79,21 @@ async function fetchUrl(url) {
   return (currentResponse = await response.json());
 }
 
-function preloading() {
-  getElement('preLoader').style.display = 'flex'; //preloader
-  document.body.style.overflow = 'hidden'; //preloader
+function preloaderStart() {
+  getElement('preLoader').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
   toTheTop();
 }
 
-async function preloader() {
+async function preloaderEnd() {
   setTimeout(function () {
     getElement('preLoader').classList.add('slideToTop');
     document.body.style.overflow = 'scroll';
+
     setTimeout(function () {
       getElement('preLoader').style.display = 'none';
-    }, 1000);
-  }, 1.0 * 1000);
+    }, 200);
+  }, 2000);
 }
 
 window.addEventListener('scroll', lazyLoad);
@@ -114,7 +115,11 @@ function lazyLoad() {
 }
 
 function closePokedex() {
-  getElement('pokedexContainer').style.display = 'none';
+  getElement('pokedexContainer').classList.add('fadeOut');
+  setTimeout(() => {
+    getElement('pokedexContainer').style.display = 'none';
+    getElement('pokedexContainer').classList.remove('fadeOut');
+  }, 350);
 }
 
 function toTheTop() {
@@ -141,25 +146,6 @@ function scrollFunction() {
 
 function changeInputPlaceholderByLanguage() {
   getElement('search').placeholder = languagePack['placeholder'];
-}
-
-function buildMyPokemonArray(currentPokemon, currentPokemonSpecies) {
-  return pokemons.push({
-    id: currentPokemon.id,
-    name: currentPokemon.name,
-    abilities: currentPokemon.abilities,
-    spritePokemanCard: currentPokemon.sprites.other.dream_world.front_default,
-    spritePokedex:
-      currentPokemon.sprites.other['official-artwork'].front_default,
-    weight: currentPokemon.weight,
-    height: currentPokemon.height,
-    stats: currentPokemon.stats,
-    types: currentPokemon.types,
-    descriptions: currentPokemonSpecies.flavor_text_entries,
-    names: currentPokemonSpecies.names,
-    genera: currentPokemonSpecies.genera,
-    evolutionChain: currentPokemonSpecies.evolution_chain,
-  });
 }
 
 function addFraction(result, answer) {
