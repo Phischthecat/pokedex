@@ -96,23 +96,23 @@ async function preloaderEnd() {
   }, 2000);
 }
 
-window.addEventListener('scroll', lazyLoad);
-let isLoading = false;
-function lazyLoad() {
-  getElement('pokemonLoader').classList.remove('hide');
-  let h = document.documentElement;
-  let b = document.body;
-  let st = 'scrollTop';
-  let sh = 'scrollHeight';
+// window.addEventListener('scroll', lazyLoad);
+// let isLoading = false;
+// function lazyLoad() {
+//   getElement('pokemonLoader').classList.remove('hide');
+//   let h = document.documentElement;
+//   let b = document.body;
+//   let st = 'scrollTop';
+//   let sh = 'scrollHeight';
 
-  let percent = ((h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight)) * 100;
+//   let percent = ((h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight)) * 100;
 
-  if (percent > 70 && !isLoading) {
-    isLoading = true;
-    limit += 15;
-    loadMorePokemons();
-  }
-}
+//   if (percent > 70 && !isLoading) {
+//     isLoading = true;
+//     limit += 15;
+//     loadMorePokemons();
+//   }
+// }
 
 function closePokedex() {
   getElement('pokedexContainer').classList.add('fadeOut');
@@ -157,27 +157,27 @@ function addFraction(result, answer) {
 }
 
 function aboutActive() {
-  getElement('about').classList.add('active');
-  getElement('stats').classList.remove('active');
+  getElement('about').classList.add('active', 'left');
+  getElement('stats').classList.remove('active', 'middle');
   getElement('stats').style.color = 'var(--clr-white)';
-  getElement('evolution').classList.remove('active');
+  getElement('evolution').classList.remove('active', 'right');
   getElement('evolution').style.color = 'var(--clr-white)';
 }
 
 function statsActive() {
-  getElement('about').classList.remove('active');
+  getElement('about').classList.remove('active', 'left');
   getElement('about').style.color = 'var(--clr-white)';
-  getElement('stats').classList.add('active');
-  getElement('evolution').classList.remove('active');
+  getElement('stats').classList.add('active', 'middle');
+  getElement('evolution').classList.remove('active', 'right');
   getElement('evolution').style.color = 'var(--clr-white)';
 }
 
 function evolutionActive() {
-  getElement('about').classList.remove('active');
+  getElement('about').classList.remove('active', 'left');
   getElement('about').style.color = 'var(--clr-white)';
-  getElement('stats').classList.remove('active');
+  getElement('stats').classList.remove('active', 'middle');
   getElement('stats').style.color = 'var(--clr-white)';
-  getElement('evolution').classList.add('active');
+  getElement('evolution').classList.add('active', 'right');
 }
 
 function slideOutPokemonInfo() {

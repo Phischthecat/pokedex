@@ -154,3 +154,89 @@ function createPokedexStats(stats) {
       </table>
   `;
 }
+
+function createEvolutionHTML(currentPokemon, evoName) {
+  return /*html*/ `
+  <div class="evoBg" onclick="renderPokedex(${currentPokemon.id - 1})">
+  <div class="evoName">
+      <span>${evoName.name}</span>
+    </div>
+    <div class="evoImg">
+      <img             
+          src="${currentPokemon.sprites.other.dream_world.front_default}" 
+          alt="${currentPokemon.name}">
+    </div>
+  </div>
+  `;
+}
+function createEvolutionWithoutOnclickHTML(currentPokemon, evoName) {
+  return /*html*/ `
+  <div class="evoBg">
+  <div class="evoName">
+      <span>${evoName.name}</span>
+    </div>
+    <div class="evoImg">
+      <img             
+          src="${currentPokemon.sprites.other.dream_world.front_default}" 
+          alt="${currentPokemon.name}">
+    </div>
+  </div>
+  `;
+}
+
+function createEvolutionLevelUp(evolutionLevel) {
+  if (!evolutionLevel) {
+    return '';
+  } else {
+    return /*html */ `<div class="levelUpContainer">
+    <span class="levelUp" id="">Level ${evolutionLevel}</span>
+  </div>
+  `;
+  }
+}
+
+function createFirstEvolution() {
+  let currentPokemon = pokemons.find((n) => {
+    return n.name === currentEvolution[0].chain.species.name;
+  });
+  let evoName = getPokemonNameByLanguage(currentPokemon.id - 1);
+  getElement('firstEvo').innerHTML = createEvolutionHTML(
+    currentPokemon,
+    evoName
+  );
+  return currentPokemon;
+}
+
+function createSecondEvolution() {
+  let currentPokemon = pokemons.find((n) => {
+    return n.name === currentEvolution[0].chain.evolves_to[0].species.name;
+  });
+  let evoName = getPokemonNameByLanguage(currentPokemon.id - 1);
+  let evolutionLevel =
+    currentEvolution[0].chain.evolves_to[0].evolution_details[0].min_level;
+  getElement('levelUpContainer1').innerHTML =
+    createEvolutionLevelUp(evolutionLevel);
+  getElement('secondEvo').innerHTML = createEvolutionHTML(
+    currentPokemon,
+    evoName
+  );
+}
+
+function createThirdEvolution() {
+  let currentPokemon = pokemons.find((n) => {
+    return (
+      n.name ===
+      currentEvolution[0].chain.evolves_to[0]?.evolves_to[0].species.name
+    );
+  });
+  let evoName = getPokemonNameByLanguage(currentPokemon.id - 1);
+  let evolutionLevel =
+    currentEvolution[0].chain.evolves_to[0].evolves_to[0].evolution_details[0]
+      .min_level;
+  getElement('levelUpContainer2').innerHTML =
+    createEvolutionLevelUp(evolutionLevel);
+  getElement('thirdEvo').innerHTML = createEvolutionHTML(
+    currentPokemon,
+    evoName
+  );
+}

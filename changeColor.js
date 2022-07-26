@@ -36,6 +36,10 @@ function changeColorByTypeInAbout(i) {
     colours[pokemons[i].types[0].type.name];
 }
 
+function changeColorByTypeInEvolution(i) {
+  getElement('evolution').style.color = colours[pokemons[i].types[0].type.name];
+}
+
 function changeWeaknessesBackgroundOnType(typeDamage, m) {
   document.getElementById(`weakness-${typeDamage[m]}`).style.backgroundColor =
     colours[typeDamage[m]];

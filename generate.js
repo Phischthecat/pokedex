@@ -29,7 +29,7 @@ function generatePokedexHeader(i) {
                 <ul>
                   <li class="menu left" id="about" onclick="renderPokedexAbout(${i})">${languagePack['about']}</li>
                   <li class="menu middle" id="stats" onclick="renderPokedexStats(${i})">${languagePack['stats']}</li>
-                  <li class="menu right" id="evolution">${languagePack['evolution']}</li>
+                  <li class="menu right" id="evolution" onclick="renderPokedexEvolution(${i})">${languagePack['evolution']}</li>
                 </ul>
               </div>
     `;
@@ -38,7 +38,6 @@ function generatePokedexHeader(i) {
 function generatePokedexAbout(i) {
   const pokemon = pokemons[i];
   let about = getElement('aboutContainer'); //in helpers.js
-  about.innerHTML = '';
   let description = getDescriptionByLanguage(i); //in helpers.js
   let genera = getGeneraByLanguage(i); //in helpers.js
   let height = pokemon.height / 10;
@@ -61,7 +60,6 @@ function generatePokedexStats(i) {
   const pokemon = pokemons[i];
   let stats = [];
   let statsContainer = getElement('statsContainer');
-  statsContainer.innerHTML = '';
   for (let j = 0; j < pokemon.stats.length; j++) {
     let statsName = getStatsNameByLanguage(j);
     let statValue = pokemon.stats[j].base_stat;
@@ -73,7 +71,6 @@ function generatePokedexStats(i) {
 function generatePokedexTypeDef(i) {
   let pokemonName = getPokemonNameByLanguage(i);
   let typeDefContainer = getElement('typeDefenseContainer');
-  typeDefContainer.innerHTML = '';
   typeDefContainer.innerHTML = /*html*/ `
       <h4 id="headlineTypeDef">${languagePack['typeDefense']}</h4>
       <span>${languagePack['typeDefDescription']} ${pokemonName.name}</span>
