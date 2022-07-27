@@ -95,3 +95,9 @@ function getWeaknesses() {
   }
   createWeaknesses();
 }
+
+async function getCurrentEvolutionChain(i) {
+  let url_evoChain = pokemonSpecies[i].evolution_chain.url;
+  let evoChain = await fetchUrl(url_evoChain);
+  currentEvolution.push(evoChain);
+}

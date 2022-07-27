@@ -158,10 +158,10 @@ function createPokedexStats(stats) {
 function createEvolutionHTML(currentPokemon, evoName) {
   return /*html*/ `
   <div class="evoBg" onclick="renderPokedex(${currentPokemon.id - 1})">
-  <div class="evoName">
+  <div class="evoName" id="evoName">
       <span>${evoName.name}</span>
     </div>
-    <div class="evoImg">
+    <div class="evoImg" id="evoImg">
       <img             
           src="${currentPokemon.sprites.other.dream_world.front_default}" 
           alt="${currentPokemon.name}">
@@ -189,10 +189,29 @@ function createEvolutionLevelUp(evolutionLevel) {
     return '';
   } else {
     return /*html */ `<div class="levelUpContainer">
-    <span class="levelUp" id="">Level ${evolutionLevel}</span>
+    <span class="levelUp">Level ${evolutionLevel}</span>
   </div>
   `;
   }
+}
+
+function changeLevelByType(i) {
+  let levels = document.querySelectorAll('.levelUp');
+  levels.forEach((level) => {
+    level.style.color = colours[pokemons[i].types[0].type.name];
+  });
+}
+
+function changeEvolutionTextShadow(i) {
+  let evolutionNames = document.querySelectorAll('.evoName');
+  evolutionNames.forEach((evolutionName) => {
+    evolutionName.style = `
+    text-shadow: 
+    -1px -1px 0 ${colours[pokemons[i].types[0].type.name]}, 
+    1px -1px 0 ${colours[pokemons[i].types[0].type.name]}, 
+    -1px 1px 0 ${colours[pokemons[i].types[0].type.name]}, 
+    1px 1px 0 ${colours[pokemons[i].types[0].type.name]}`;
+  });
 }
 
 function createFirstEvolution() {
@@ -204,7 +223,6 @@ function createFirstEvolution() {
     currentPokemon,
     evoName
   );
-  return currentPokemon;
 }
 
 function createSecondEvolution() {
@@ -236,6 +254,23 @@ function createThirdEvolution() {
   getElement('levelUpContainer2').innerHTML =
     createEvolutionLevelUp(evolutionLevel);
   getElement('thirdEvo').innerHTML = createEvolutionHTML(
+    currentPokemon,
+    evoName
+  );
+}
+
+async function createEvolutionPichu() {
+  await loadPichu();
+  let currentPokemon = pichu.find((n) => {
+    return n.name === currentEvolution[0].chain.species.name;
+  });
+  let currentPokemonSpecies = pichuSpecies.find((n) => {
+    return n.name === currentEvolution[0].chain.species.name;
+  });
+  let evoName = currentPokemonSpecies.names.find(
+    (n) => n.language.name == language
+  );
+  getElement('firstEvo').innerHTML = createEvolutionWithoutOnclickHTML(
     currentPokemon,
     evoName
   );

@@ -96,23 +96,23 @@ async function preloaderEnd() {
   }, 2000);
 }
 
-// window.addEventListener('scroll', lazyLoad);
-// let isLoading = false;
-// function lazyLoad() {
-//   getElement('pokemonLoader').classList.remove('hide');
-//   let h = document.documentElement;
-//   let b = document.body;
-//   let st = 'scrollTop';
-//   let sh = 'scrollHeight';
+window.addEventListener('scroll', lazyLoad);
+let isLoading = false;
+function lazyLoad() {
+  getElement('pokemonLoader').classList.remove('hide');
+  let h = document.documentElement;
+  let b = document.body;
+  let st = 'scrollTop';
+  let sh = 'scrollHeight';
 
-//   let percent = ((h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight)) * 100;
+  let percent = ((h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight)) * 100;
 
-//   if (percent > 70 && !isLoading) {
-//     isLoading = true;
-//     limit += 15;
-//     loadMorePokemons();
-//   }
-// }
+  if (percent > 70 && !isLoading) {
+    isLoading = true;
+    limit += 15;
+    loadMorePokemons();
+  }
+}
 
 function closePokedex() {
   getElement('pokedexContainer').classList.add('fadeOut');
@@ -154,6 +154,10 @@ function addFraction(result, answer) {
   } else if (result === 0.25) {
     answer.innerHTML = '&frac14;';
   }
+}
+
+function hideLevelContainer(id) {
+  getElement(id).classList.add('hide');
 }
 
 function aboutActive() {

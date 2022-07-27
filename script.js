@@ -7,9 +7,10 @@ let typeDamage = [];
 let weaknesses = [];
 let currentAbilities = [];
 let currentEvolution = [];
+
 let language = 'en';
 let languagePack;
-let limit = 26; //id
+let limit = 30; //id
 
 function chooseGerman() {
   language = 'de';
@@ -127,67 +128,10 @@ async function renderPokedexEvolution(i) {
   changeColorByTypeInEvolution(i);
 }
 
-let pichu;
-let pichuSpecies;
-
-async function loadPichu() {
-  let promises_pokemon = [];
-  let promises_pokemonSpecies = [];
-  let url = `https://pokeapi.co/api/v2/pokemon/172`;
-  let url_species = `https://pokeapi.co/api/v2/pokemon-species/172`;
-  promises_pokemon.push(fetchUrl(url));
-  promises_pokemonSpecies.push(fetchUrl(url_species));
-  // resolved all promises simultaneously
-  pichu = await Promise.all(promises_pokemon);
-  pichuSpecies = await Promise.all(promises_pokemonSpecies);
-}
-
-async function createEvolutionPichu() {
-  await loadPichu();
-  let currentPokemon = pichu.find((n) => {
-    return n.name === currentEvolution[0].chain.species.name;
-  });
-  let currentPokemonSpecies = pichuSpecies.find((n) => {
-    return n.name === currentEvolution[0].chain.species.name;
-  });
-  let evoName = currentPokemonSpecies.names.find(
-    (n) => n.language.name == language
-  );
-  getElement('firstEvo').innerHTML = createEvolutionWithoutOnclickHTML(
-    currentPokemon,
-    evoName
-  );
-}
-
-async function generatePokedexEvolution(i) {
-  if (currentEvolution.length === 1 && currentEvolution[0].id === 10) {
-    createEvolutionPichu();
-  } else {
-    createFirstEvolution();
-  }
-  if (currentEvolution[0].chain.evolves_to.length === 1) {
-    createSecondEvolution();
-  } else {
-    getElement('levelUpContainer1').classList.add('hide');
-  }
-  if (currentEvolution[0].chain.evolves_to[0].evolves_to.length === 1) {
-    createThirdEvolution();
-  } else {
-    getElement('levelUpContainer2').classList.add('hide');
-  }
-}
-
-async function getCurrentEvolutionChain(i) {
-  let url_evoChain = pokemonSpecies[i].evolution_chain.url;
-  let evoChain = await fetchUrl(url_evoChain);
-  currentEvolution.push(evoChain);
-}
-
 async function loadPokemon() {
   await loadTypes();
   await loadStats();
   await loadAllPokemonInfos();
-  console.log(pokemons, pokemonStats, typesOfPokemon);
 }
 
 async function loadTypes() {
@@ -211,8 +155,6 @@ async function loadStats() {
 }
 
 async function loadAllPokemonInfos() {
-  let promises_pokemon = [];
-  let promises_pokemonSpecies = [];
   for (let i = 1; i <= limit; i++) {
     let url = `https://pokeapi.co/api/v2/pokemon/` + i;
     let url_species = `https://pokeapi.co/api/v2/pokemon-species/` + i;
@@ -222,31 +164,43 @@ async function loadAllPokemonInfos() {
   // resolved all promises simultaneously
   pokemons = await Promise.all(promises_pokemon);
   pokemonSpecies = await Promise.all(promises_pokemonSpecies);
-  console.log(pokemons, pokemonSpecies);
+}
+let promises_pokemon = [];
+let promises_pokemonSpecies = [];
+
+async function loadMorePokemons() {
+  for (let i = pokemons.length + 1; i <= limit; i++) {
+    let url = `https://pokeapi.co/api/v2/pokemon/` + i;
+    let url_species = `https://pokeapi.co/api/v2/pokemon-species/` + i;
+    promises_pokemon.push(fetchUrl(url));
+    promises_pokemonSpecies.push(fetchUrl(url_species));
+  }
+  // resolved all promises simultaneously and pushes the response in the empty array before the equal sign
+  pokemons = await Promise.all(promises_pokemon);
+  pokemonSpecies = await Promise.all(promises_pokemonSpecies);
+
+  renderPokemonCard();
+  isLoading = false;
+  getElement('pokemonLoader').classList.add('hide');
 }
 
-// async function loadMorePokemons() {
-//   let promises_pokemon = [];
-//   let promises_pokemonSpecies = [];
-//   for (let i = pokemons.length + 1; i <= limit; i++) {
-//     let url = `https://pokeapi.co/api/v2/pokemon/` + i;
-//     let url_species = `https://pokeapi.co/api/v2/pokemon-species/` + i;
-//     promises_pokemon.push(fetchUrl(url));
-//     promises_pokemonSpecies.push(fetchUrl(url_species));
-//   }
-//   for (let j = 0; j < promises_pokemon.length; j++) {
-//     // resolved all promises simultaneously and pushes the response in the empty array before the equal sign
-//     Promise.all(promises_pokemon).then((values) => {
-//       pokemons.push(values[j]);
-//     });
-//     Promise.all(promises_pokemonSpecies).then((values) => {
-//       pokemonSpecies.push(values[j]);
-//     });
-//     // pokemonSpecies = await Promise.all(promises_pokemonSpecies);
-//   }
+/**
+ * Because Pichu has ID 172,
+ * it doesn't load at the same time as Pikachu and Raichu.
+ * So I had to load Pichu for the evolution section.
+ * But without the onclick function.
+ */
+let pichu;
+let pichuSpecies;
 
-//   console.log(pokemons, pokemonSpecies);
-//   renderPokemonCard();
-//   isLoading = false;
-//   getElement('pokemonLoader').classList.add('hide');
-// }
+async function loadPichu() {
+  let promises_pokemon = [];
+  let promises_pokemonSpecies = [];
+  let url = `https://pokeapi.co/api/v2/pokemon/172`;
+  let url_species = `https://pokeapi.co/api/v2/pokemon-species/172`;
+  promises_pokemon.push(fetchUrl(url));
+  promises_pokemonSpecies.push(fetchUrl(url_species));
+  // resolved all promises simultaneously
+  pichu = await Promise.all(promises_pokemon);
+  pichuSpecies = await Promise.all(promises_pokemonSpecies);
+}

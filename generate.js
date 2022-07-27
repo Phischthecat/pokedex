@@ -91,6 +91,26 @@ function generatePokedexTypeDef(i) {
   checkTypeDefForPokedex();
 }
 
+async function generatePokedexEvolution(i) {
+  if (currentEvolution.length === 1 && currentEvolution[0].id === 10) {
+    createEvolutionPichu();
+  } else {
+    createFirstEvolution();
+  }
+  if (currentEvolution[0].chain.evolves_to.length === 1) {
+    createSecondEvolution();
+  } else {
+    hideLevelContainer('levelUpContainer1');
+  }
+  if (currentEvolution[0].chain.evolves_to[0].evolves_to.length === 1) {
+    createThirdEvolution();
+  } else {
+    hideLevelContainer('levelUpContainer2');
+  }
+  changeLevelByType(i);
+  changeEvolutionTextShadow(i);
+}
+
 function generatePokemonTypes(i) {
   let typeContainer = getElement(`pokemonTypes${i}`);
   typeContainer.innerHTML = '';
