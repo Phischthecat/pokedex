@@ -100,12 +100,12 @@ async function generatePokedexEvolution(i) {
   if (currentEvolution[0].chain.evolves_to.length === 1) {
     createSecondEvolution();
   } else {
-    hideLevelContainer('levelUpContainer1');
+    hideContainer('levelUpContainer1');
   }
   if (currentEvolution[0].chain.evolves_to[0].evolves_to.length === 1) {
     createThirdEvolution();
   } else {
-    hideLevelContainer('levelUpContainer2');
+    hideContainer('levelUpContainer2');
   }
   changeLevelByType(i);
   changeEvolutionTextShadow(i);

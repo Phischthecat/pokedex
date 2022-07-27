@@ -156,7 +156,7 @@ function addFraction(result, answer) {
   }
 }
 
-function hideLevelContainer(id) {
+function hideContainer(id) {
   getElement(id).classList.add('hide');
 }
 
@@ -192,4 +192,50 @@ function slideOutPokemonInfo() {
 function slideInPokemonInfo() {
   document.getElementById('current-pokemon').classList.add('slide-in');
   document.getElementById('current-pokemon').classList.remove('slide-out');
+}
+
+function filterPokemons() {
+  currentPokemon = [];
+  window.scrollTo(0, 0);
+  getElement('pokemonContainer').innerHTML = '';
+  hideContainer('pokemonLoader');
+  let search = getElement('search').value;
+  search.toLowerCase();
+  loadSearch(search, currentPokemon);
+}
+
+function loadSearch(search, currentPokemon) {
+  if (search.length === 0) {
+    renderPokemonCard();
+  } else {
+    for (let j = 0; j < pokemons.length; j++) {
+      if (isNaN(search)) {
+        let searchName = getPokemonNameByLanguage(j);
+        if (searchName.name.toLowerCase().includes(search)) {
+          currentPokemon = pokemons[j];
+          let i = currentPokemon.id - 1;
+          renderPokemonCardOnFilter(i);
+        }
+      } else if (pokemons[j].id == search) {
+        let i = search - 1;
+        renderPokemonCardOnFilter(i);
+        renderPokedex(i);
+      }
+    }
+  }
+}
+
+function renderPokemonCardOnFilter(i) {
+  let pokemon_container = getElement('pokemonContainer');
+  const pokemon = pokemons[i];
+  let pokemonName = getPokemonNameByLanguage(i);
+  let pokemonId = createIdFormat(pokemon.id); //in helpers.js
+  let pokemonImg = pokemon.sprites.other.dream_world.front_default;
+  pokemon_container.innerHTML += generatePokemonCard(
+    i,
+    pokemonId,
+    pokemonName,
+    pokemonImg
+  );
+  generatePokemonTypes(i);
 }

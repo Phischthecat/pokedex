@@ -7,7 +7,8 @@ let typeDamage = [];
 let weaknesses = [];
 let currentAbilities = [];
 let currentEvolution = [];
-
+let promises_pokemon = [];
+let promises_pokemonSpecies = [];
 let language = 'en';
 let languagePack;
 let limit = 30; //id
@@ -61,6 +62,7 @@ function renderPokemonCard() {
     );
     generatePokemonTypes(i);
   }
+  console.log(pokemons);
 }
 
 function renderPokedex(i) {
@@ -165,8 +167,6 @@ async function loadAllPokemonInfos() {
   pokemons = await Promise.all(promises_pokemon);
   pokemonSpecies = await Promise.all(promises_pokemonSpecies);
 }
-let promises_pokemon = [];
-let promises_pokemonSpecies = [];
 
 async function loadMorePokemons() {
   for (let i = pokemons.length + 1; i <= limit; i++) {
