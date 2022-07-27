@@ -17,33 +17,27 @@ function generatePokedexHeader(i) {
   const pokemon = pokemons[i];
   let pokemonId = createIdFormat(pokemon.id); //in helpers.js
   let pokemonName = getPokemonNameByLanguage(i); //in helpers.js
-  getElement('headline').innerHTML = pokemonName.name;
-  getElement('pokemonName').innerHTML = pokemonName.name;
+  getElement('headline').innerHTML = pokemonName.name; //in get.js
+  getElement('pokemonName').innerHTML = pokemonName.name; //in get.js
   getElement('pokemonImg').src =
-    pokemon.sprites.other['official-artwork'].front_default;
-  getElement('pokemonId').innerHTML = `#${pokemonId}`;
-  generatePokedexTypes(i);
-  changeBackgroundPokedex(i); //in helpers.js
-  getElement('pokedexMenu').innerHTML = /*html*/ `
-    <div class="pokedexMenu">
-                <ul>
-                  <li class="menu left" id="about" onclick="renderPokedexAbout(${i})">${languagePack['about']}</li>
-                  <li class="menu middle" id="stats" onclick="renderPokedexStats(${i})">${languagePack['stats']}</li>
-                  <li class="menu right" id="evolution" onclick="renderPokedexEvolution(${i})">${languagePack['evolution']}</li>
-                </ul>
-              </div>
-    `;
+    pokemon.sprites.other['official-artwork'].front_default; //in get.js
+  getElement('pokemonId').innerHTML = `#${pokemonId}`; //in get.js
+  generatePokedexTypes(i); //in generate.js
+  changeBackgroundPokedex(i); //in changeColor.js
+  //in get.js
+  getElement('pokedexMenu').innerHTML = createPokedexHeader(i); //in create.js
 }
 
 function generatePokedexAbout(i) {
   const pokemon = pokemons[i];
-  let about = getElement('aboutContainer'); //in helpers.js
-  let description = getDescriptionByLanguage(i); //in helpers.js
-  let genera = getGeneraByLanguage(i); //in helpers.js
+  let about = getElement('aboutContainer'); //in get.js
+  let description = getDescriptionByLanguage(i); //in get.js
+  let genera = getGeneraByLanguage(i); //in get.js
   let height = pokemon.height / 10;
   let weight = pokemon.weight / 10;
-  let ability1 = getAbility1ByLanguage(); //in helpers.js
+  let ability1 = getAbility1ByLanguage(); //in get.js
 
+  //in create.js
   about.innerHTML = createPokedexAbout(
     description,
     genera,
@@ -51,92 +45,83 @@ function generatePokedexAbout(i) {
     weight,
     ability1
   );
-  let ability2 = getAbility2ByLanguage(); //in helpers.js
-  checkIfAbility2(ability2);
-  getWeaknesses();
+  let ability2 = getAbility2ByLanguage(); //in get.js
+  checkIfAbility2(ability2); //in check.js
+  getWeaknesses(); //in get.js
 }
 
 function generatePokedexStats(i) {
   const pokemon = pokemons[i];
   let stats = [];
-  let statsContainer = getElement('statsContainer');
+  let statsContainer = getElement('statsContainer'); //in get.js
   for (let j = 0; j < pokemon.stats.length; j++) {
-    let statsName = getStatsNameByLanguage(j);
+    let statsName = getStatsNameByLanguage(j); //in get.js
     let statValue = pokemon.stats[j].base_stat;
     stats.push(statsName.name, statValue);
   }
-  statsContainer.innerHTML = createPokedexStats(stats);
+  statsContainer.innerHTML = createPokedexStats(stats); //in create.js
 }
 
 function generatePokedexTypeDef(i) {
-  let pokemonName = getPokemonNameByLanguage(i);
-  let typeDefContainer = getElement('typeDefenseContainer');
-  typeDefContainer.innerHTML = /*html*/ `
-      <h4 id="headlineTypeDef">${languagePack['typeDefense']}</h4>
-      <span>${languagePack['typeDefDescription']} ${pokemonName.name}</span>
-      <div id="typeDefense"></div>
-      `;
-  let typeDef = getElement('typeDefense');
+  let pokemonName = getPokemonNameByLanguage(i); //in get.js
+  let typeDefContainer = getElement('typeDefenseContainer'); //in get.js
+  typeDefContainer.innerHTML = createTypeDefContainer(pokemonName); //in create.js
+  let typeDef = getElement('typeDefense'); //in get.js
   typeDef.innerHTML = '';
   for (let j = 0; j < typesOfPokemon.length; j++) {
     let type = typesOfPokemon[j].name;
-    typeDef.innerHTML += /*html*/ `
-    <div  class="typeDefContainer">
-      <img class="typeIcon" id="${type}${j}" src="./img/icons/${type}.svg" alt="${type}">
-      <div class="typeDef"><span id="${type}">1</span></div>
-    </div>
-    `;
-    changeTypeDefBackgroundOnType(j, type);
+    typeDef.innerHTML += createTypeDefs(j, type); //in create.js
+    changeTypeDefBackgroundOnType(j, type); //in changeColor.js
   }
-  checkTypeDefForPokedex();
+  checkTypeDefForPokedex(); //in check.js
 }
 
 async function generatePokedexEvolution(i) {
   if (currentEvolution.length === 1 && currentEvolution[0].id === 10) {
-    createEvolutionPichu();
+    createEvolutionPichu(); //in create.js
   } else {
-    createFirstEvolution();
+    createFirstEvolution(); //in create.js
   }
   if (currentEvolution[0].chain.evolves_to.length === 1) {
-    createSecondEvolution();
+    createSecondEvolution(); //in create.js
   } else {
-    hideContainer('levelUpContainer1');
+    hideContainer('levelUpContainer1'); //in helpers.js
   }
   if (currentEvolution[0].chain.evolves_to[0].evolves_to.length === 1) {
-    createThirdEvolution();
+    createThirdEvolution(); //in create.js
   } else {
-    hideContainer('levelUpContainer2');
+    hideContainer('levelUpContainer2'); //in helpers.js
   }
-  changeLevelByType(i);
-  changeEvolutionTextShadow(i);
+  changeLevelByType(i); //in changeColor.js
+  changeEvolutionTextShadow(i); //in create.js
 }
 
 function generatePokemonTypes(i) {
-  let typeContainer = getElement(`pokemonTypes${i}`);
+  let typeContainer = getElement(`pokemonTypes${i}`); //in get.js
   typeContainer.innerHTML = '';
-
   for (let j = 0; j < pokemons[i].types.length; j++) {
     let type = pokemons[i].types[j].type.name;
-    let typeByLanguage = getTypeNameByLanguage(i, j);
+    let typeByLanguage = getTypeNameByLanguage(i, j); //in get.js
+    //in create.js
     typeContainer.innerHTML += createPokemonTypesHTML(
       i,
       j,
       type,
       typeByLanguage
     );
-    changePokemonBackgroundOnType(i, j, type); //in helpers.js
+    changePokemonBackgroundOnType(i, j, type); //in changeColor.js
   }
 }
 
 function generatePokedexTypes(i) {
-  let typeContainer = document.getElementById(`types`);
+  let typeContainer = document.getElementById(`types`); //in get.js
   typeContainer.innerHTML = '';
   typeDef = [];
   for (let j = 0; j < pokemons[i].types.length; j++) {
     let type = pokemons[i].types[j].type.name;
-    let typeByLanguage = getTypeNameByLanguage(i, j);
-    typeContainer.innerHTML += createPokedexTypesHTML(j, type, typeByLanguage);
-    changePokedexBackgroundOnType(j, type); //in helpers.js
-    getTypeDefForPokedex(i, j);
+    let typeByLanguage = getTypeNameByLanguage(i, j); //in get.js
+    typeContainer.innerHTML += createPokedexTypesHTML(j, type, typeByLanguage); //in create.js
+    changePokedexBackgroundOnType(j, type); //in changeColor.js
+    getTypeDefForPokedex(i, j); //in get.js
   }
 }

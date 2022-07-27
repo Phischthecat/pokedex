@@ -11,6 +11,18 @@ function createPokemonTypesHTML(i, j, type, typeByLanguage) {
     `;
 }
 
+function createPokedexHeader(i) {
+  return /*html*/ ` 
+  <div class="pokedexMenu">
+              <ul>
+                <li class="menu left" id="about" onclick="renderPokedexAbout(${i})">${languagePack['about']}</li>
+                <li class="menu middle" id="stats" onclick="renderPokedexStats(${i})">${languagePack['stats']}</li>
+                <li class="menu right" id="evolution" onclick="renderPokedexEvolution(${i})">${languagePack['evolution']}</li>
+              </ul>
+            </div>
+  `;
+}
+
 function createPokedexTypesHTML(j, type, typeByLanguage) {
   return /*html*/ `
   <div id="pokedexType${j}" class="type typeStyling">
@@ -152,6 +164,23 @@ function createPokedexStats(stats) {
           </tr>
         </tbody>
       </table>
+  `;
+}
+
+function createTypeDefContainer(pokemonName) {
+  return /*html*/ `
+  <h4 id="headlineTypeDef">${languagePack['typeDefense']}</h4>
+  <span>${languagePack['typeDefDescription']} ${pokemonName.name}</span>
+  <div id="typeDefense"></div>
+  `;
+}
+
+function createTypeDefs(j, type) {
+  return /*html*/ `
+  <div  class="typeDefContainer">
+    <img class="typeIcon" id="${type}${j}" src="./img/icons/${type}.svg" alt="${type}">
+    <div class="typeDef"><span id="${type}">1</span></div>
+  </div>
   `;
 }
 

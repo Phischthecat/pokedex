@@ -11,19 +11,19 @@ let promises_pokemon = [];
 let promises_pokemonSpecies = [];
 let language = 'en';
 let languagePack;
-let limit = 30; //id
+let limit = 30; //first loaded amount
 
 function chooseGerman() {
-  language = 'de';
   getElement('german').style.filter = 'brightness(1)';
   getElement('english').style.filter = 'brightness(0.5)';
+  language = 'de';
   restart();
 }
 
 function chooseEnglish() {
-  language = 'en';
   getElement('german').style.filter = 'brightness(0.5)';
   getElement('english').style.filter = 'brightness(1)';
+  language = 'en';
   restart();
 }
 
@@ -51,28 +51,29 @@ function renderPokemonCard() {
   pokemon_container.innerHTML = '';
   for (let i = 0; i < pokemons.length; i++) {
     const pokemon = pokemons[i];
-    let pokemonName = getPokemonNameByLanguage(i);
+    let pokemonName = getPokemonNameByLanguage(i); //in get.js
     let pokemonId = createIdFormat(pokemon.id); //in helpers.js
     let pokemonImg = pokemon.sprites.other.dream_world.front_default;
     pokemon_container.innerHTML += generatePokemonCard(
+      //in generate.js
       i,
       pokemonId,
       pokemonName,
       pokemonImg
     );
-    generatePokemonTypes(i);
+    generatePokemonTypes(i); //in generate.js
   }
   console.log(pokemons);
 }
 
 function renderPokedex(i) {
-  getElement('pokedexContainer').style.display = 'flex';
-  slideOutPokemonInfo();
-  getElement('loader').classList.remove('hide');
-  generatePokedexHeader(i);
+  getElement('pokedexContainer').style.display = 'flex'; //in get.js
+  slideOutPokemonInfo(); //in helpers.js
+  getElement('loader').classList.remove('hide'); //in get.js
+  generatePokedexHeader(i); //in generate.js
   renderPokedexAbout(i);
   setTimeout(function () {
-    slideInPokemonInfo();
+    slideInPokemonInfo(); //in helpers.js
     setTimeout(function () {
       getElement('loader').classList.add('hide');
     }, 200);
@@ -80,22 +81,22 @@ function renderPokedex(i) {
 }
 
 async function renderPokedexAbout(i) {
-  let infoContainer = getElement('infoContainer');
+  let infoContainer = getElement('infoContainer'); //in get.js
   infoContainer.innerHTML = '';
   infoContainer.innerHTML = /*html*/ `
   <div id="aboutWrapper">
     <div id="aboutContainer"></div>
   </div>
   `;
-  aboutActive();
+  aboutActive(); //in helpers.js
   currentAbilities = [];
-  await getCurrentAbilities(i);
-  generatePokedexAbout(i);
-  changeColorByTypeInAbout(i);
+  await getCurrentAbilities(i); //in get.js
+  generatePokedexAbout(i); //in generate.js
+  changeColorByTypeInAbout(i); //in changeColor.js
 }
 
 function renderPokedexStats(i) {
-  let infoContainer = getElement('infoContainer');
+  let infoContainer = getElement('infoContainer'); //in get.js
   infoContainer.innerHTML = '';
   infoContainer.innerHTML = /*html*/ `
   <div id="statsWrapper">
@@ -104,13 +105,13 @@ function renderPokedexStats(i) {
   </div>
   `;
   statsActive(); //in helpers.js
-  generatePokedexStats(i);
-  generatePokedexTypeDef(i);
+  generatePokedexStats(i); //in generate.js
+  generatePokedexTypeDef(i); //in generate.js
   changeColorByTypeInStats(i); //in helpers.js
 }
 
 async function renderPokedexEvolution(i) {
-  let infoContainer = getElement('infoContainer');
+  let infoContainer = getElement('infoContainer'); //in get.js
   infoContainer.innerHTML = '';
   infoContainer.innerHTML = /*html*/ `
   <div id="evolutionWrapper">
@@ -125,9 +126,9 @@ async function renderPokedexEvolution(i) {
   `;
   evolutionActive(); //in helpers.js
   currentEvolution = [];
-  await getCurrentEvolutionChain(i);
-  generatePokedexEvolution(i);
-  changeColorByTypeInEvolution(i);
+  await getCurrentEvolutionChain(i); //in get.js
+  generatePokedexEvolution(i); //in generate.js
+  changeColorByTypeInEvolution(i); //in changeColor.js
 }
 
 async function loadPokemon() {
@@ -140,7 +141,7 @@ async function loadTypes() {
   let promises = [];
   for (let i = 1; i < 19; i++) {
     let url_types = `https://pokeapi.co/api/v2/type/` + i;
-    promises.push(fetchUrl(url_types));
+    promises.push(fetchUrl(url_types)); //in helpers.js
   }
   // resolved all promises simultaneously
   typesOfPokemon = await Promise.all(promises);
@@ -150,7 +151,7 @@ async function loadStats() {
   let promises = [];
   for (let i = 1; i < 7; i++) {
     let url_stats = `https://pokeapi.co/api/v2/stat/` + i;
-    promises.push(fetchUrl(url_stats));
+    promises.push(fetchUrl(url_stats)); //in helpers.js
   }
   // resolved all promises simultaneously
   pokemonStats = await Promise.all(promises);
@@ -160,8 +161,8 @@ async function loadAllPokemonInfos() {
   for (let i = 1; i <= limit; i++) {
     let url = `https://pokeapi.co/api/v2/pokemon/` + i;
     let url_species = `https://pokeapi.co/api/v2/pokemon-species/` + i;
-    promises_pokemon.push(fetchUrl(url));
-    promises_pokemonSpecies.push(fetchUrl(url_species));
+    promises_pokemon.push(fetchUrl(url)); //in helpers.js
+    promises_pokemonSpecies.push(fetchUrl(url_species)); //in helpers.js
   }
   // resolved all promises simultaneously
   pokemons = await Promise.all(promises_pokemon);
@@ -172,8 +173,8 @@ async function loadMorePokemons() {
   for (let i = pokemons.length + 1; i <= limit; i++) {
     let url = `https://pokeapi.co/api/v2/pokemon/` + i;
     let url_species = `https://pokeapi.co/api/v2/pokemon-species/` + i;
-    promises_pokemon.push(fetchUrl(url));
-    promises_pokemonSpecies.push(fetchUrl(url_species));
+    promises_pokemon.push(fetchUrl(url)); //in helpers.js
+    promises_pokemonSpecies.push(fetchUrl(url_species)); //in helpers.js
   }
   // resolved all promises simultaneously and pushes the response in the empty array before the equal sign
   pokemons = await Promise.all(promises_pokemon);
@@ -181,7 +182,7 @@ async function loadMorePokemons() {
 
   renderPokemonCard();
   isLoading = false;
-  getElement('pokemonLoader').classList.add('hide');
+  hideContainer('pokemonLoader'); //in helpers.js
 }
 
 /**

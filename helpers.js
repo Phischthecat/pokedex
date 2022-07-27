@@ -194,37 +194,6 @@ function slideInPokemonInfo() {
   document.getElementById('current-pokemon').classList.remove('slide-out');
 }
 
-function filterPokemons() {
-  currentPokemon = [];
-  window.scrollTo(0, 0);
-  getElement('pokemonContainer').innerHTML = '';
-  hideContainer('pokemonLoader');
-  let search = getElement('search').value;
-  search.toLowerCase();
-  loadSearch(search, currentPokemon);
-}
-
-function loadSearch(search, currentPokemon) {
-  if (search.length === 0) {
-    renderPokemonCard();
-  } else {
-    for (let j = 0; j < pokemons.length; j++) {
-      if (isNaN(search)) {
-        let searchName = getPokemonNameByLanguage(j);
-        if (searchName.name.toLowerCase().includes(search)) {
-          currentPokemon = pokemons[j];
-          let i = currentPokemon.id - 1;
-          renderPokemonCardOnFilter(i);
-        }
-      } else if (pokemons[j].id == search) {
-        let i = search - 1;
-        renderPokemonCardOnFilter(i);
-        renderPokedex(i);
-      }
-    }
-  }
-}
-
 function renderPokemonCardOnFilter(i) {
   let pokemon_container = getElement('pokemonContainer');
   const pokemon = pokemons[i];
