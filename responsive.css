@@ -19,14 +19,14 @@
   }
 
   #current-pokemon {
-    position: sticky;
+    position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100%;
+    height: 100%;
   }
 
   .wrapper {
+    margin-top: unset;
     right: unset;
   }
 
@@ -58,6 +58,10 @@
     padding: 0 30px;
   }
 
+  #current-pokemon {
+    height: 100vh;
+  }
+
   .pokemonLoader {
     margin-right: unset;
   }
@@ -65,6 +69,20 @@
   .mybutton {
     left: unset;
     right: 5px;
+  }
+
+  .left::before {
+    height: 70px;
+    width: 45px;
+  }
+
+  .right::after {
+    height: 70px;
+    width: 45px;
+  }
+
+  #infoSection {
+    transform: scale(1);
   }
 
   @keyframes slideOut {
@@ -141,14 +159,14 @@
     width: 385px;
   }
 
-  .active::before {
+  .left::before {
     left: -19%;
-    width: 21px;
+    width: 32px;
   }
 
-  .active::after {
+  .right::after {
     right: -19%;
-    width: 21px;
+    width: 32px;
   }
 
   #pokemonImg {
@@ -158,6 +176,12 @@
 
   .circle {
     left: 45px;
+  }
+}
+
+@media (max-width: 520px) {
+  #preLoader img {
+    height: 25%;
   }
 }
 
@@ -189,7 +213,7 @@
   }
 
   .pokedexMenu {
-    height: 50px;
+    height: 60px;
     font-size: 14px;
   }
 
@@ -198,15 +222,19 @@
     padding: 10px;
   }
 
-  .active::before {
+  .left::before {
     left: -22%;
   }
-  .active::after {
+  .right::after {
     right: -22%;
   }
 
   .pokemonTypes {
     width: max-content;
+  }
+
+  .pokedexData tbody td:first-child {
+    width: 30%;
   }
 }
 
@@ -222,6 +250,7 @@
   .typeStyling span {
     display: none;
   }
+
   .pokedexData tbody td:first-child {
     width: 55%;
   }
@@ -234,14 +263,14 @@
     font-size: 22px;
   }
 
-  .active::before {
-    left: -16%;
-    width: 14px;
+  .left::before {
+    left: -18%;
+    width: 18px;
   }
 
-  .active::after {
-    right: -16%;
-    width: 14px;
+  .right::after {
+    right: -18%;
+    width: 18px;
   }
 }
 

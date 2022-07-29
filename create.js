@@ -32,6 +32,14 @@ function createPokedexTypesHTML(j, type, typeByLanguage) {
   `;
 }
 
+function createPokedexAboutContainer() {
+  return /*html*/ `
+  <div id="aboutWrapper">
+    <div id="aboutContainer"></div>
+  </div>
+  `;
+}
+
 function createPokedexAbout(description, genera, height, weight, ability1) {
   let height_calc = height * 2.54;
   let height_inch = height_calc.toFixed(2).replace('.', "'");
@@ -85,6 +93,15 @@ function createWeaknesses() {
       `;
     changeWeaknessesBackgroundOnType(typeDamage, m);
   }
+}
+
+function createPokedeStatsContainer() {
+  return /*html*/ `
+  <div id="statsWrapper">
+    <div id="statsContainer"></div>
+    <div id="typeDefenseContainer"></div>
+  </div>
+  `;
 }
 
 function createPokedexStats(stats) {
@@ -180,6 +197,20 @@ function createTypeDefs(j, type) {
   <div  class="typeDefContainer">
     <img class="typeIcon" id="${type}${j}" src="./img/icons/${type}.svg" alt="${type}">
     <div class="typeDef"><span id="${type}">1</span></div>
+  </div>
+  `;
+}
+
+function createPokedexEvolutionContainer() {
+  return /*html*/ `
+  <div id="evolutionWrapper">
+    <div id="evolutionContainer">
+      <div class="evolution" id="firstEvo"></div>
+      <div class="levelUpContainer" id="levelUpContainer1"></div>
+      <div class="evolution" id="secondEvo"></div>
+      <div class="levelUpContainer" id="levelUpContainer2"></div>
+      <div class="evolution" id="thirdEvo"></div>
+    </div>
   </div>
   `;
 }

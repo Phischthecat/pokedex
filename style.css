@@ -194,7 +194,7 @@ body {
   position: relative;
   display: flex;
   justify-content: center;
-  height: 60px;
+  height: 70px;
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0;
 }
@@ -394,14 +394,22 @@ h2 {
 
 ------------------------------------*/
 
-.infoContainer {
+#infoSection {
+  height: calc(100% - 250px);
+}
+
+#infoContainer {
   border-radius: var(--border-radius-xl) var(--border-radius-xl)
     var(--border-radius) var(--border-radius);
-  margin-top: -40px;
+  margin-top: -50px;
   padding: 30px;
-  height: 45vh;
   overflow: scroll;
   background: #fff;
+  height: 100%;
+}
+
+#current-pokemon {
+  height: 90vh;
 }
 
 /* ----------------------------------
@@ -465,8 +473,8 @@ table thead th {
 .typeIcon {
   background-color: black;
   padding: 4px;
-  height: 25px;
-  width: 25px;
+  height: 30px;
+  width: 30px;
   border-radius: calc(var(--border-radius) / 2);
 }
 

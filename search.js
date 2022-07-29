@@ -1,5 +1,5 @@
 function filterPokemons() {
-  currentPokemon = [];
+  let currentPokemon = [];
   window.scrollTo(0, 0);
   getElement('pokemonContainer').innerHTML = '';
   hideContainer('pokemonLoader');
@@ -14,15 +14,15 @@ function loadSearch(search, currentPokemon) {
   } else {
     for (let j = 0; j < pokemons.length; j++) {
       if (isNaN(search)) {
-        searchForString(j);
+        searchForString(j, search, currentPokemon);
       } else if (pokemons[j].id == search) {
-        searchForNumber();
+        searchForString(j, search, currentPokemon);
       }
     }
   }
 }
 
-function searchForString(j) {
+function searchForString(j, search, currentPokemon) {
   let searchName = getPokemonNameByLanguage(j);
   if (searchName.name.toLowerCase().includes(search)) {
     currentPokemon = pokemons[j];

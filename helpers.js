@@ -120,6 +120,7 @@ function closePokedex() {
     getElement('pokedexContainer').style.display = 'none';
     getElement('pokedexContainer').classList.remove('fadeOut');
   }, 350);
+  document.documentElement.style.overflow = 'auto';
 }
 
 function toTheTop() {

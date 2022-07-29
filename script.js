@@ -78,16 +78,16 @@ function renderPokedex(i) {
       getElement('loader').classList.add('hide');
     }, 200);
   }, 1500);
+
+  if (window.innerWidth < 830) {
+    document.documentElement.style.overflow = 'hidden';
+  }
 }
 
 async function renderPokedexAbout(i) {
   let infoContainer = getElement('infoContainer'); //in get.js
   infoContainer.innerHTML = '';
-  infoContainer.innerHTML = /*html*/ `
-  <div id="aboutWrapper">
-    <div id="aboutContainer"></div>
-  </div>
-  `;
+  infoContainer.innerHTML = createPokedexAboutContainer(); //in create.js
   aboutActive(); //in helpers.js
   currentAbilities = [];
   await getCurrentAbilities(i); //in get.js
@@ -98,12 +98,7 @@ async function renderPokedexAbout(i) {
 function renderPokedexStats(i) {
   let infoContainer = getElement('infoContainer'); //in get.js
   infoContainer.innerHTML = '';
-  infoContainer.innerHTML = /*html*/ `
-  <div id="statsWrapper">
-    <div id="statsContainer"></div>
-    <div id="typeDefenseContainer"></div>
-  </div>
-  `;
+  infoContainer.innerHTML = createPokedeStatsContainer(); //in create.js
   statsActive(); //in helpers.js
   generatePokedexStats(i); //in generate.js
   generatePokedexTypeDef(i); //in generate.js
@@ -113,17 +108,7 @@ function renderPokedexStats(i) {
 async function renderPokedexEvolution(i) {
   let infoContainer = getElement('infoContainer'); //in get.js
   infoContainer.innerHTML = '';
-  infoContainer.innerHTML = /*html*/ `
-  <div id="evolutionWrapper">
-    <div id="evolutionContainer">
-      <div class="evolution" id="firstEvo"></div>
-      <div class="levelUpContainer" id="levelUpContainer1"></div>
-      <div class="evolution" id="secondEvo"></div>
-      <div class="levelUpContainer" id="levelUpContainer2"></div>
-      <div class="evolution" id="thirdEvo"></div>
-    </div>
-  </div>
-  `;
+  infoContainer.innerHTML = createPokedexEvolutionContainer(); //in create.js
   evolutionActive(); //in helpers.js
   currentEvolution = [];
   await getCurrentEvolutionChain(i); //in get.js
