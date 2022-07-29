@@ -81,6 +81,7 @@ function renderPokedex(i) {
 
   if (window.innerWidth < 830) {
     document.documentElement.style.overflow = 'hidden';
+    getElement('myBtn').classList.add('hide');
   }
 }
 

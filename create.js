@@ -278,26 +278,35 @@ function createFirstEvolution() {
   let currentPokemon = pokemons.find((n) => {
     return n.name === currentEvolution[0].chain.species.name;
   });
-  let evoName = getPokemonNameByLanguage(currentPokemon.id - 1);
-  getElement('firstEvo').innerHTML = createEvolutionHTML(
-    currentPokemon,
-    evoName
-  );
+  if (currentPokemon) {
+    let evoName = getPokemonNameByLanguage(currentPokemon.id - 1);
+    getElement('firstEvo').innerHTML = createEvolutionHTML(
+      currentPokemon,
+      evoName
+    );
+  } else {
+    getElement('firstEvo').innerHTML = '';
+  }
 }
 
 function createSecondEvolution() {
   let currentPokemon = pokemons.find((n) => {
     return n.name === currentEvolution[0].chain.evolves_to[0].species.name;
   });
-  let evoName = getPokemonNameByLanguage(currentPokemon.id - 1);
-  let evolutionLevel =
-    currentEvolution[0].chain.evolves_to[0].evolution_details[0].min_level;
-  getElement('levelUpContainer1').innerHTML =
-    createEvolutionLevelUp(evolutionLevel);
-  getElement('secondEvo').innerHTML = createEvolutionHTML(
-    currentPokemon,
-    evoName
-  );
+  if (currentPokemon) {
+    let evoName = getPokemonNameByLanguage(currentPokemon.id - 1);
+    let evolutionLevel =
+      currentEvolution[0].chain.evolves_to[0].evolution_details[0].min_level;
+    getElement('levelUpContainer1').innerHTML =
+      createEvolutionLevelUp(evolutionLevel);
+    getElement('secondEvo').innerHTML = createEvolutionHTML(
+      currentPokemon,
+      evoName
+    );
+  } else {
+    getElement('levelUpContainer1').classList.add('hide');
+    getElement('secondEvo').innerHTML = '';
+  }
 }
 
 function createThirdEvolution() {
@@ -307,16 +316,21 @@ function createThirdEvolution() {
       currentEvolution[0].chain.evolves_to[0]?.evolves_to[0].species.name
     );
   });
-  let evoName = getPokemonNameByLanguage(currentPokemon.id - 1);
-  let evolutionLevel =
-    currentEvolution[0].chain.evolves_to[0].evolves_to[0].evolution_details[0]
-      .min_level;
-  getElement('levelUpContainer2').innerHTML =
-    createEvolutionLevelUp(evolutionLevel);
-  getElement('thirdEvo').innerHTML = createEvolutionHTML(
-    currentPokemon,
-    evoName
-  );
+  if (currentPokemon) {
+    let evoName = getPokemonNameByLanguage(currentPokemon.id - 1);
+    let evolutionLevel =
+      currentEvolution[0].chain.evolves_to[0].evolves_to[0].evolution_details[0]
+        .min_level;
+    getElement('levelUpContainer2').innerHTML =
+      createEvolutionLevelUp(evolutionLevel);
+    getElement('thirdEvo').innerHTML = createEvolutionHTML(
+      currentPokemon,
+      evoName
+    );
+  } else {
+    getElement('levelUpContainer2').classList.add('hide');
+    getElement('thirdEvo').innerHTML = '';
+  }
 }
 
 async function createEvolutionPichu() {

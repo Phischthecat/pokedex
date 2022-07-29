@@ -82,12 +82,12 @@ async function generatePokedexEvolution(i) {
   } else {
     createFirstEvolution(); //in create.js
   }
-  if (currentEvolution[0].chain.evolves_to.length === 1) {
+  if (currentEvolution[0].chain.evolves_to.length >= 1) {
     createSecondEvolution(); //in create.js
   } else {
     hideContainer('levelUpContainer1'); //in helpers.js
   }
-  if (currentEvolution[0].chain.evolves_to[0].evolves_to.length === 1) {
+  if (currentEvolution[0].chain.evolves_to[0].evolves_to.length >= 1) {
     createThirdEvolution(); //in create.js
   } else {
     hideContainer('levelUpContainer2'); //in helpers.js
