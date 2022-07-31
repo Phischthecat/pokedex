@@ -63,7 +63,6 @@ function renderPokemonCard() {
     );
     generatePokemonTypes(i); //in generate.js
   }
-  console.log(pokemons);
 }
 
 function renderPokedex(i) {
