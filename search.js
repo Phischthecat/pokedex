@@ -4,7 +4,7 @@ function filterPokemons() {
   getElement('pokemonContainer').innerHTML = '';
   hideContainer('pokemonLoader');
   let search = getElement('search').value;
-  search.toLowerCase();
+  search = search.toLowerCase();
   loadSearch(search, currentPokemon);
 }
 
@@ -15,9 +15,10 @@ function loadSearch(search, currentPokemon) {
     for (let j = 0; j < pokemons.length; j++) {
       if (isNaN(search)) {
         searchForString(j, search, currentPokemon);
-      } else if (pokemons[j].id == search) {
-        searchForString(j, search, currentPokemon);
       }
+    }
+    if (!isNaN(search)) {
+      searchForNumber(search);
     }
   }
 }
@@ -26,12 +27,11 @@ function searchForString(j, search, currentPokemon) {
   let searchName = getPokemonNameByLanguage(j);
   if (searchName.name.toLowerCase().includes(search)) {
     currentPokemon = pokemons[j];
-    let i = currentPokemon.id - 1;
-    renderPokemonCardOnFilter(i);
+    renderPokemonCardOnFilter(j);
   }
 }
 
-function searchForNumber() {
+function searchForNumber(search) {
   let i = search - 1;
   renderPokemonCardOnFilter(i);
   renderPokedex(i);
